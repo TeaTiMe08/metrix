@@ -1,0 +1,10 @@
+name: metrix
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - requests
+      - ffmpeg-python
+      - pillow

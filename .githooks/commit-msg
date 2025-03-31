@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Check commit message for conventional commit format (e.g., "feat: add new feature")
+commit_msg=$(cat .git/COMMIT_EDITMSG)
+if ! echo "$commit_msg" | grep -qE '^(feat|fix|chore|docs|style|refactor|perf|test|build|ci)(\([a-zA-Z0-9_-]+\))?: .+'; then
+  echo "ERROR: Commit message does not follow conventional commit format."
+  echo "Please use the following format for your commit message:"
+  echo "  <type>(<scope>): <description>"
+  echo "Example: feat(auth): add login functionality or feat: add login functionality"
+  exit 1
+fi

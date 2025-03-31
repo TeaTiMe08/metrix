@@ -1,0 +1,32 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Debug",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "src/main.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": [],
+      "justMyCode": true,
+      "env": {
+        "DEBUG_MODE": "true",
+        "GITHUB_USERNAME": "octocat"
+        // "FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
+        // "SYMBOL_FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
+        // "TEXT_COLOR": "limegreen",
+        // "BACKGROUND_COLOR": "black",
+        // "TITLE_SUFFIX": "'s GitHub Metrix",
+        // "ACTIVITY_TEXT": "Last month commit activity:",
+        // "ACTIVITY_DAYS": "30",
+        // "WIDTH": "622",
+        // "HEIGHT": "350"
+        // "GLITCHES": "true",
+      }
+    }
+  ]
+}

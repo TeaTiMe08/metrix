@@ -1,0 +1,7 @@
+#!/bin/sh
+FILE_TO_BLOCK=".github_token"
+echo $commit_msg
+if git diff --cached --name-only | grep -q "^$FILE_TO_BLOCK$"; then
+    echo "Error: Changes to $FILE_TO_BLOCK are not allowed."
+    exit 1
+fi
