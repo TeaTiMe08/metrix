@@ -1,58 +1,111 @@
-name: Generate Metrix
-description: Generates a retro-style GIF showcasing GitHub metrics for your README profile.
-author: Joan Roig
+name: 'Generate Metrix'
+description: 'Generates a retro-style GIF showcasing GitHub metrics for your README profile.'
+author: 'Joan Roig'
 branding:
-  icon: "terminal"
-  color: "blue"
-  
+  icon: 'terminal'
+  color: 'blue'
+
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token for authentication'
+    required: true
+  GITHUB_USERNAME:
+    description: 'GitHub username for displaying data'
+    required: true
+  FONT_PATH:
+    description: 'Path to the font file'
+    required: false
+    default: "assets/MxPlus_IBM_BIOS.ttf"
+  SYMBOL_FONT_PATH:
+    description: 'Path to the symbol font file'
+    required: false
+    default: "assets/MxPlus_IBM_BIOS.ttf"
+  TEXT_COLOR:
+    description: 'Color of the text'
+    required: false
+    default: 'limegreen'
+  BACKGROUND_COLOR:
+    description: 'Color of the background'
+    required: false
+    default: 'black'
+  TITLE_SUFFIX:
+    description: 'Suffix for the title'
+    required: false
+    default: "'s GitHub Metrix"
+  ACTIVITY_TEXT:
+    description: 'Text for the activity section'
+    required: false
+    default: 'Last month commit activity:'
+  ACTIVITY_DAYS:
+    description: 'Number of days for activity'
+    required: false
+    default: '30'
+  WIDTH:
+    description: 'Width of the GIF'
+    required: false
+    default: '622'
+  HEIGHT:
+    description: 'Height of the GIF'
+    required: false
+    default: '350'
+  GLITCHES:
+    description: 'Enable or disable glitches'
+    required: false
+    default: 'true'
+  SCHEDULE:
+    description: 'Cron expression for scheduling the workflow'
+    required: false
+    default: '0 0 * * 1'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set Up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install FFmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: Install Python Dependencies
+      run: pip install requests pillow ffmpeg-python
+
+    - name: Generate GIF
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_USERNAME: ${{ inputs.GITHUB_USERNAME }}
+        FONT_PATH: ${{ inputs.FONT_PATH }}
+        SYMBOL_FONT_PATH: ${{ inputs.SYMBOL_FONT_PATH }}
+        TEXT_COLOR: ${{ inputs.TEXT_COLOR }}
+        BACKGROUND_COLOR: ${{ inputs.BACKGROUND_COLOR }}
+        TITLE_SUFFIX: ${{ inputs.TITLE_SUFFIX }}
+        ACTIVITY_TEXT: ${{ inputs.ACTIVITY_TEXT }}
+        ACTIVITY_DAYS: ${{ inputs.ACTIVITY_DAYS }}
+        WIDTH: ${{ inputs.WIDTH }}
+        HEIGHT: ${{ inputs.HEIGHT }}
+        GLITCHES: ${{ inputs.GLITCHES }}
+      run: python src/main.py
+
+    - name: Commit and Push GIF
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add metrix.gif
+        git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
+        git push
+
 on:
   schedule:
-    - cron: "0 0 * * 1" # Runs every Monday at midnight UTC
+    - cron: ${{ inputs.SCHEDULE }} # Parametrized cron expression
   push:
     branches:
       - main # Runs when pushing changes to main
   workflow_dispatch: # Allows manual triggering
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
-      - name: Install Python Dependencies
-        run: pip install requests pillow ffmpeg-python
-
-      - name: Generate GIF
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: "octocat"
-          # FONT_PATH: "assets/MxPlus_IBM_BIOS.ttf"
-          # SYMBOL_FONT_PATH: "assets/MxPlus_IBM_BIOS.ttf"
-          # TEXT_COLOR: "limegreen"
-          # BACKGROUND_COLOR: "black"
-          # TITLE_SUFFIX: "'s GitHub Metrix"
-          # ACTIVITY_TEXT: "Last month commit activity:"
-          # ACTIVITY_DAYS: "30"
-          # WIDTH: "622"
-          # HEIGHT: "350"
-          # GLITCHES: "true"
-        run: python src/main.py
-
-      - name: Commit and Push GIF
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add metrix.gif
-          git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
-          git push
