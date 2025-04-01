@@ -40,6 +40,10 @@ inputs:
     description: "Number of days for activity"
     required: false
     default: "30"
+  LOOP:
+    description: "Enable or disable looping the GIF"
+    required: false
+    default: "false"
   WIDTH:
     description: "Width of the GIF"
     required: false
@@ -88,6 +92,7 @@ runs:
         TITLE_SUFFIX: ${{ inputs.TITLE_SUFFIX }}
         ACTIVITY_TEXT: ${{ inputs.ACTIVITY_TEXT }}
         ACTIVITY_DAYS: ${{ inputs.ACTIVITY_DAYS }}
+        LOOP: ${{ inputs.LOOP }}
         WIDTH: ${{ inputs.WIDTH }}
         HEIGHT: ${{ inputs.HEIGHT }}
         GLITCHES: ${{ inputs.GLITCHES }}

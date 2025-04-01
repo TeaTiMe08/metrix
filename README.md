@@ -75,6 +75,7 @@ with:
 with:
   GITHUB_USERNAME: 'joanroig'
   TEXT_COLOR: 'red'
+  LOOP: 'true'
 ```
 
 ---
@@ -88,6 +89,7 @@ with:
   GITHUB_USERNAME: 'joanroig'
   TEXT_COLOR: 'white'
   BACKGROUND_COLOR: 'blue'
+  LOOP: 'true'
 ```
 
 ---
@@ -102,6 +104,7 @@ with:
   TEXT_COLOR: 'yellow'
   BACKGROUND_COLOR: 'black'
   GLITCHES: 'false'
+  LOOP: 'true'
 ```
 
 ---
@@ -117,6 +120,7 @@ with:
   BACKGROUND_COLOR: 'darkgoldenrod'
   TITLE_SUFFIX: ' is booting up......'
   ACTIVITY_TEXT: 'I worked a lot lately...'
+  LOOP: 'true'
 ```
 
 ---

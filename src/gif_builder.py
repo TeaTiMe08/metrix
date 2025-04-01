@@ -26,6 +26,6 @@ class GifBuilder:
                 dither="heckbert",
                 new="False",
             )
-            .output(output_file)
+            .output(output_file, loop=Config.LOOP)
             .run(overwrite_output=True)
         )

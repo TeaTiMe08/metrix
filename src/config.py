@@ -27,6 +27,7 @@ class Config:
     ACTIVITY_DAYS = int(os.getenv("ACTIVITY_DAYS", 30))
 
     # Display Settings
+    LOOP = 0 if os.getenv("LOOP", "false").lower() == "true" else -1
     WIDTH = int(os.getenv("WIDTH", 622))
     HEIGHT = int(os.getenv("HEIGHT", 350))
 
