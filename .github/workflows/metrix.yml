@@ -20,10 +20,10 @@ jobs:
         uses: joanroig/metrix@main
         with:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: 'joanroig' # Replace with your GitHub username
+          GITHUB_USERNAME: 'joanroig'
           # FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'
           # SYMBOL_FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'
-          TEXT_COLOR: 'red'
+          # TEXT_COLOR: 'limegreen'
           # BACKGROUND_COLOR: 'black'
           # TITLE_SUFFIX: "'s GitHub Metrix"
           # ACTIVITY_TEXT: 'Last month commit activity:'
