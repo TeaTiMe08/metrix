@@ -1,12 +1,10 @@
 import datetime
-import logging
 from datetime import datetime, timedelta, timezone
 
 import requests
 
 from config import Config
-
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+from log_config import logger
 
 
 class GitHubAPI:
@@ -14,7 +12,7 @@ class GitHubAPI:
     @staticmethod
     def fetch_github_data(username, token):
         if not token:
-            logging.error("GitHub token is required.")
+            logger.error("GitHub token is required.")
             raise ValueError("GitHub token is required.")
 
         headers = {"Authorization": f"Bearer {token}"}
@@ -24,11 +22,11 @@ class GitHubAPI:
 
         user_response = requests.get(user_url, headers=headers)
         if user_response.status_code != 200:
-            logging.error(f"Failed to fetch user data: {user_response.status_code} - {user_response.text}")
+            logger.error(f"Failed to fetch user data: {user_response.status_code} - {user_response.text}")
 
         events_response = requests.get(events_url, headers=headers)
         if events_response.status_code != 200:
-            logging.error(f"Failed to fetch events: {events_response.status_code} - {events_response.text}")
+            logger.error(f"Failed to fetch events: {events_response.status_code} - {events_response.text}")
 
         repos_data = []
         page = 1
@@ -41,7 +39,7 @@ class GitHubAPI:
                 repos_data.extend(repos_page)
                 page += 1
             else:
-                logging.error(f"Failed to fetch repositories on page {page}: {response.status_code} - {response.text}")
+                logger.error(f"Failed to fetch repositories on page {page}: {response.status_code} - {response.text}")
                 break
 
         data = {
@@ -56,7 +54,7 @@ class GitHubAPI:
         commits_url = f"https://api.github.com/search/commits?q=author:{username}&sort=author-date&order=desc&per_page=1"
         response = requests.get(commits_url, headers={"Authorization": f"Bearer {token}"})
         if response.status_code != 200:
-            logging.error(f"Failed to fetch total commits: {response.status_code} - {response.text}")
+            logger.error(f"Failed to fetch total commits: {response.status_code} - {response.text}")
             return 0
         return response.json().get("total_count", 0)
 
@@ -64,7 +62,7 @@ class GitHubAPI:
     def get_commits_last_month(username, token):
         today = datetime.now(timezone.utc)
         start_date = today - timedelta(days=Config.ACTIVITY_DAYS)
-        commits_url = f"https://api.github.com/search/commits?q=author:{username}+committer-date:>={start_date.strftime('%Y-%m-%d')}&sort=author-date&order=desc"
+        commits_url = f"https://api.github.com/search/commits?q=user:{username}+committer-date:{start_date.strftime('%Y-%m-%d')}..{today.strftime('%Y-%m-%d')}&sort=author-date&order=desc"
 
         headers = {
             "Authorization": f"Bearer {token}",
@@ -75,15 +73,15 @@ class GitHubAPI:
         page = 1
 
         while True:
-            response = requests.get(commits_url, headers=headers, params={"page": page, "per_page": 100})
+            response = requests.get(commits_url, headers=headers, params={"page": page, "per_page": 1000})
             if response.status_code != 200:
-                logging.error(f"Failed to fetch commits for the last month: {response.status_code} - {response.text}")
+                logger.error(f"Failed to fetch commits for the last month: {response.status_code} - {response.text}")
                 break
 
             for commit in response.json().get("items", []):
                 commit_date = datetime.strptime(commit["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%S.%f%z")
                 delta = today - commit_date
-                if delta.days < Config.ACTIVITY_DAYS:
+                if 0 <= delta.days < Config.ACTIVITY_DAYS:
                     daily_commit_counts[delta.days] += 1
 
             if "next" not in response.links:

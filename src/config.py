@@ -11,7 +11,7 @@ class Config:
 
     # Authentication
     TOKEN = os.getenv("GITHUB_TOKEN") if not DEBUG_MODE else FileUtils.read_token_from_file()
-    GITHUB_USERNAME = os.getenv("GITHUB_USERNAME", "octocat")
+    GITHUB_USERNAME = os.getenv("GITHUB_USERNAME", "joanroig")
 
     # Fonts
     FONT_PATH = os.getenv("FONT_PATH", "assets/MxPlus_IBM_BIOS.ttf")
@@ -22,7 +22,7 @@ class Config:
     BACKGROUND_COLOR = os.getenv("BACKGROUND_COLOR", "black")
 
     # Content Settings
-    TITLE_SUFFIX = os.getenv("ACTIVITY_TEXT", "'s GitHub Metrix")
+    TITLE_SUFFIX = os.getenv("TITLE_SUFFIX", "'s GitHub Metrix")
     ACTIVITY_TEXT = os.getenv("ACTIVITY_TEXT", "Last month commit activity:")
     ACTIVITY_DAYS = int(os.getenv("ACTIVITY_DAYS", 30))
 

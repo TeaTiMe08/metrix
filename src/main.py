@@ -1,17 +1,14 @@
-import logging
 
 from config import Config
 from file_utils import FileUtils
 from frame_builder import FrameBuilder
 from gif_builder import GifBuilder
 from github_api import GitHubAPI
+from log_config import logger
 from text_builder import TextBuilder
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 if __name__ == "__main__":
-    logging.info("Starting...")
+    logger.info("Starting...")
     try:
         FileUtils.cleanup_frames_folder(Config.TEMP_FRAMES_DIR)
         data = GitHubAPI.fetch_github_data(Config.GITHUB_USERNAME, Config.TOKEN)
@@ -21,7 +18,7 @@ if __name__ == "__main__":
         activity_graphic = TextBuilder.generate_activity_graphic(commits_last_month)
         FrameBuilder.create_typing_frames(text_lines, activity_graphic)
         GifBuilder.generate_gif_ffmpeg(frame_rate, Config.OUTPUT_GIF)
-        logging.info(f"GIF saved as {Config.OUTPUT_GIF}")
+        logger.info(f"GIF saved as {Config.OUTPUT_GIF}")
     except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        logger.error(f"An error occurred: {e}")
         raise

@@ -1,80 +1,81 @@
-name: 'Generate Metrix'
-description: 'Generates a retro-style GIF showcasing GitHub metrics for your README profile.'
-author: 'Joan Roig'
+name: "Generate Metrix"
+description: "Generates a retro-style GIF showcasing GitHub metrics for your README profile."
+author: "joanroig"
 branding:
-  icon: 'terminal'
-  color: 'green'
+  icon: "terminal"
+  color: "green"
 
 inputs:
   GITHUB_TOKEN:
-    description: 'GitHub token for authentication'
+    description: "GitHub token for authentication"
     required: true
   GITHUB_USERNAME:
-    description: 'GitHub username for displaying data'
+    description: "GitHub username for displaying data"
     required: true
   FONT_PATH:
-    description: 'Path to the font file'
+    description: "Path to the font file"
     required: false
-    default: "assets/MxPlus_IBM_BIOS.ttf"
+    default: "metrix/assets/MxPlus_IBM_BIOS.ttf"
   SYMBOL_FONT_PATH:
-    description: 'Path to the symbol font file'
+    description: "Path to the symbol font file"
     required: false
-    default: "assets/MxPlus_IBM_BIOS.ttf"
+    default: "metrix/assets/MxPlus_IBM_BIOS.ttf"
   TEXT_COLOR:
-    description: 'Color of the text'
+    description: "Color of the text"
     required: false
-    default: 'limegreen'
+    default: "limegreen"
   BACKGROUND_COLOR:
-    description: 'Color of the background'
+    description: "Color of the background"
     required: false
-    default: 'black'
+    default: "black"
   TITLE_SUFFIX:
-    description: 'Suffix for the title'
+    description: "Suffix for the title"
     required: false
     default: "'s GitHub Metrix"
   ACTIVITY_TEXT:
-    description: 'Text for the activity section'
+    description: "Text for the activity section"
     required: false
-    default: 'Last month commit activity:'
+    default: "Last month commit activity:"
   ACTIVITY_DAYS:
-    description: 'Number of days for activity'
+    description: "Number of days for activity"
     required: false
-    default: '30'
+    default: "30"
   WIDTH:
-    description: 'Width of the GIF'
+    description: "Width of the GIF"
     required: false
-    default: '622'
+    default: "622"
   HEIGHT:
-    description: 'Height of the GIF'
+    description: "Height of the GIF"
     required: false
-    default: '350'
+    default: "350"
   GLITCHES:
-    description: 'Enable or disable glitches'
+    description: "Enable or disable glitches"
     required: false
-    default: 'true'
-  SCHEDULE:
-    description: 'Cron expression for scheduling the workflow'
-    required: false
-    default: '0 0 * * 1'
+    default: "true"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: Checkout Repository
+    - name: Checkout Metrics Code
       uses: actions/checkout@v4
+      with:
+        repository: joanroig/metrix
+        path: metrix
 
     - name: Set Up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: "3.9"
 
     - name: Install FFmpeg
       run: |
         sudo apt-get update
         sudo apt-get install -y ffmpeg
+      shell: bash
 
     - name: Install Python Dependencies
-      run: pip install requests pillow ffmpeg-python
+      run: pip install -r metrix/requirements.txt
+      shell: bash
 
     - name: Generate GIF
       env:
@@ -90,22 +91,26 @@ runs:
         WIDTH: ${{ inputs.WIDTH }}
         HEIGHT: ${{ inputs.HEIGHT }}
         GLITCHES: ${{ inputs.GLITCHES }}
-      run: python src/main.py
+      run: python -u metrix/src/main.py
+      shell: bash
+
+    - name: Checkout Executing Repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.GITHUB_TOKEN }}
+        path: target
+
+    - name: Move Generated GIF to Executing Repo
+      run: |
+        mv metrix.gif target/
+      shell: bash
 
     - name: Commit and Push GIF
-      env:
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
+        cd target
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add metrix.gif
         git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
         git push
-
-on:
-  schedule:
-    - cron: ${{ inputs.SCHEDULE }} # Parametrized cron expression
-  push:
-    branches:
-      - main # Runs when pushing changes to main
-  workflow_dispatch: # Allows manual triggering
+      shell: bash

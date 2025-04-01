@@ -5,6 +5,4 @@ dependencies:
   - python=3.9
   - pip
   - pip:
-      - requests
-      - ffmpeg-python
-      - pillow
+      - -r requirements.txt
