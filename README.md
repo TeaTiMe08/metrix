@@ -130,6 +130,7 @@ with:
 ### Requirements
 
 - **Conda** or **Miniconda** (alternatively, only Python)
+- **FFmpeg**
 - **VSCode** (optional, for debugging and development)
 
 ### Setup
