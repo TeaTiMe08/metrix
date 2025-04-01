@@ -3,7 +3,7 @@ description: 'Generates a retro-style GIF showcasing GitHub metrics for your REA
 author: 'Joan Roig'
 branding:
   icon: 'terminal'
-  color: 'blue'
+  color: 'green'
 
 inputs:
   GITHUB_TOKEN:
