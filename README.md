@@ -1,16 +1,32 @@
-<p align="center">
-  <a href="https://github.com/joanroig/metrix">
-      <img alt="Metrix" src="metrix.gif" width="360px">
-  </a>
-</p>
-
 <h1 align="center">
   Metrix
 </h1>
-
 <p align="center">
   Metrix generates a retro-style GIF showcasing GitHub metrics for your README profile.
 </p>
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="img/metrix-default.gif" width="250px"></td>
+    <td align="center"><img src="img/metrix-red.gif" width="250px"></td>
+    <td align="center"><img src="img/metrix-blue.gif" width="250px"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Default</b></td>
+    <td align="center"><b>Red</b></td>
+    <td align="center"><b>White/Blue</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="img/metrix-yellow-noglitch.gif" width="250px"></td>
+    <td align="center"><img src="img/metrix-gold-customtext.gif" width="250px"></td>
+    <td align="center"><img src="img/metrix-purple-torvalds.gif" width="250px"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Yellow No-Glitch</b></td>
+    <td align="center"><b>Gold Custom Text</b></td>
+    <td align="center"><b>Purple Torvalds</b></td>
+  </tr>
+</table>
 
 ## Usage Guide
 
@@ -58,6 +74,8 @@ Some examples are provided below, with the corresponding configuration for each:
 
 ### Default
 
+> Notice that looping is deactivated by default!
+
 ![default](img/metrix-default.gif)
 
 ```
@@ -80,7 +98,7 @@ with:
 
 ---
 
-### Blue
+### White over blue
 
 ![blue](img/metrix-blue.gif)
 
@@ -102,14 +120,13 @@ with:
 with:
   GITHUB_USERNAME: 'joanroig'
   TEXT_COLOR: 'yellow'
-  BACKGROUND_COLOR: 'black'
   GLITCHES: 'false'
   LOOP: 'true'
 ```
 
 ---
 
-### Golden with custom texts
+### Gold over dark gold, with custom texts
 
 ![gold customtext](img/metrix-gold-customtext.gif)
 
@@ -120,6 +137,22 @@ with:
   BACKGROUND_COLOR: 'darkgoldenrod'
   TITLE_SUFFIX: ' is booting up......'
   ACTIVITY_TEXT: 'I worked a lot lately...'
+  LOOP: 'true'
+```
+
+---
+
+### Yellow over purple, with data from another user, reduced activity days, and custom activity text
+
+![default](img/metrix-purple-torvalds.gif)
+
+```
+with:
+  GITHUB_USERNAME: 'torvalds'
+  TEXT_COLOR: 'yellow'
+  BACKGROUND_COLOR: 'purple'
+  ACTIVITY_TEXT: 'Last 16 days were intense:'
+  ACTIVITY_DAYS: '16'
   LOOP: 'true'
 ```
 
