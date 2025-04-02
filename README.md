@@ -177,8 +177,8 @@ with:
   GITHUB_USERNAME: 'torvalds'
   TEXT_COLOR: 'yellow'
   BACKGROUND_COLOR: 'purple'
-  ACTIVITY_TEXT: 'Last 16 days were intense:'
-  ACTIVITY_DAYS: '16'
+  ACTIVITY_TEXT: 'Last two weeks were intense:'
+  ACTIVITY_DAYS: '14'
   LOOP: 'true'
 ```
 
