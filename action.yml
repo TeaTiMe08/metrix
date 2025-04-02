@@ -1,5 +1,5 @@
 name: "Generate Metrix"
-description: "Generates a retro-style GIF showcasing GitHub metrics for your README profile."
+description: "Metrix generates a customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile."
 author: "joanroig"
 branding:
   icon: "terminal"
