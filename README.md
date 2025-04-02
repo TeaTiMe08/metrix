@@ -1,30 +1,56 @@
-<h1 align="center">
-  Metrix
-</h1>
-<p align="center">
-  Metrix generates a retro-style GIF showcasing GitHub metrics for your README profile.
-</p>
+<h1 align="center">Metrix</h1>
+<p align="center">Metrix generates a customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile.</p>
 
 <table align="center">
   <tr>
-    <td align="center"><img src="img/metrix-default.gif" width="250px"></td>
-    <td align="center"><img src="img/metrix-red.gif" width="250px"></td>
-    <td align="center"><img src="img/metrix-blue.gif" width="250px"></td>
+    <td align="center">
+      <a href="#default"><img src="img/metrix-default.gif" width="240px" /></a>
+    </td>
+    <td align="center">
+      <a href="#red"><img src="img/metrix-red.gif" width="240px" /></a>
+    </td>
+    <td align="center">
+      <a href="#blue"><img src="img/metrix-blue.gif" width="240px" /></a>
+    </td>
   </tr>
   <tr>
-    <td align="center"><b>Default</b></td>
-    <td align="center"><b>Red</b></td>
-    <td align="center"><b>White/Blue</b></td>
+    <td align="center">
+      <a href="#default"><b>Default</b></a>
+    </td>
+    <td align="center">
+      <a href="#red"><b>Red</b></a>
+    </td>
+    <td align="center">
+      <a href="#blue"><b>White-Blue</b></a>
+    </td>
   </tr>
   <tr>
-    <td align="center"><img src="img/metrix-yellow-noglitch.gif" width="250px"></td>
-    <td align="center"><img src="img/metrix-gold-customtext.gif" width="250px"></td>
-    <td align="center"><img src="img/metrix-purple-torvalds.gif" width="250px"></td>
+    <td align="center">
+      <a href="#yellow-noglitch"
+        ><img src="img/metrix-yellow-noglitch.gif" width="240px"
+      /></a>
+    </td>
+    <td align="center">
+      <a href="#gold-customtext"
+        ><img src="img/metrix-gold-customtext.gif" width="240px"
+      /></a>
+    </td>
+    <td align="center">
+      <a href="#purple-torvalds"
+        ><img src="img/metrix-purple-torvalds.gif" width="240px"
+      /></a>
+    </td>
   </tr>
   <tr>
-    <td align="center"><b>Yellow No-Glitch</b></td>
-    <td align="center"><b>Gold Custom Text</b></td>
-    <td align="center"><b>Purple Torvalds</b></td>
+    <td align="center">
+      <a href="#yellow-noglitch"><b>Yellow No-Glitch</b></a>
+    </td>
+    <td align="center">
+      <a href="#gold-customtext"><b>Gold Custom Text</b></a>
+    </td>
+    <td align="center">
+      <a href="#purple-torvalds"><b>Purple Torvalds</b></a>
+    </td>
   </tr>
 </table>
 
@@ -72,7 +98,7 @@ Some examples are provided below, with the corresponding configuration for each:
 
 ---
 
-### Default
+### <a id="default"></a> Default
 
 > Notice that looping is deactivated by default!
 
@@ -85,7 +111,7 @@ with:
 
 ---
 
-### Red
+### <a id="red"></a> Red
 
 ![red](img/metrix-red.gif)
 
@@ -98,7 +124,7 @@ with:
 
 ---
 
-### White over blue
+### <a id="blue"></a> White over blue
 
 ![blue](img/metrix-blue.gif)
 
@@ -112,7 +138,7 @@ with:
 
 ---
 
-### Yellow with disabled glitches
+### <a id="yellow-noglitch"></a> Yellow with disabled glitches
 
 ![yellow noglitch](img/metrix-yellow-noglitch.gif)
 
@@ -126,7 +152,7 @@ with:
 
 ---
 
-### Gold over dark gold, with custom texts
+### <a id="gold-customtext"></a> Gold over dark gold, with custom texts
 
 ![gold customtext](img/metrix-gold-customtext.gif)
 
@@ -142,7 +168,7 @@ with:
 
 ---
 
-### Yellow over purple, with data from another user, reduced activity days, and custom activity text
+### <a id="purple-torvalds"></a> Yellow over purple, with data from another user, reduced activity days, and custom activity text
 
 ![default](img/metrix-purple-torvalds.gif)
 
