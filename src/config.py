@@ -1,5 +1,6 @@
 import os
 
+from color_utils import ColorUtils
 from file_utils import FileUtils
 
 
@@ -17,9 +18,11 @@ class Config:
     FONT_PATH = os.getenv("FONT_PATH", "assets/MxPlus_IBM_BIOS.ttf")
     SYMBOL_FONT_PATH = os.getenv("SYMBOL_FONT_PATH", "assets/MxPlus_IBM_BIOS.ttf")
 
-    # Colors
-    TEXT_COLOR = os.getenv("TEXT_COLOR", "limegreen")
-    BACKGROUND_COLOR = os.getenv("BACKGROUND_COLOR", "black")
+    # Colors: can be a specific color (e.g., "red" or "#FF0000"), "random", or a method name such as "complementary", "contrasting", or "shade"
+    _TEXT_COLOR = os.getenv("TEXT_COLOR", "random").lower()
+    _BACKGROUND_COLOR = os.getenv("BACKGROUND_COLOR", "random").lower()
+    MINIMUM_CONTRAST = int(os.getenv("MINIMUM_CONTRAST", 2))
+    TEXT_COLOR, BACKGROUND_COLOR, METHOD, CONTRAST = ColorUtils.resolve_colors(_TEXT_COLOR, _BACKGROUND_COLOR, MINIMUM_CONTRAST)
 
     # Content Settings
     TITLE_SUFFIX = os.getenv("TITLE_SUFFIX", "'s GitHub Metrix")
@@ -36,5 +39,5 @@ class Config:
     GLITCH_SYMBOLS = ['☺', '☻', '♥', '♦', '♣', '♠', '•', '◘', '○', '◙', '█', '░', '▒', '▓', '☼', '♪', '♫', '■', '□', '▲', '►', '▼', '◄', '◊', '●']
 
     # Output Paths
-    OUTPUT_GIF = "metrix.gif"
+    OUTPUT_GIF = "metrix"
     TEMP_FRAMES_DIR = "frames"

@@ -163,9 +163,10 @@ cython_debug/
 
 # temporary files
 tmp/
-frames/
+frames*/
 github_cache.json
 commits_cache.json
+bulk*/
 
 # github token
 .github_token

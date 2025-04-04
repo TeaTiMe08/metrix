@@ -1,3 +1,4 @@
 requests
 ffmpeg-python
 pillow
+matplotlib

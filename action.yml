@@ -23,11 +23,15 @@ inputs:
   TEXT_COLOR:
     description: "Color of the text"
     required: false
-    default: "limegreen"
+    default: "random"
   BACKGROUND_COLOR:
     description: "Color of the background"
     required: false
-    default: "black"
+    default: "random"
+  MINIMUM_CONTRAST:
+    description: "Minimum color contrast"
+    required: false
+    default: "2"
   TITLE_SUFFIX:
     description: "Suffix for the title"
     required: false
@@ -89,6 +93,7 @@ runs:
         SYMBOL_FONT_PATH: ${{ inputs.SYMBOL_FONT_PATH }}
         TEXT_COLOR: ${{ inputs.TEXT_COLOR }}
         BACKGROUND_COLOR: ${{ inputs.BACKGROUND_COLOR }}
+        MINIMUM_CONTRAST: ${{ inputs.MINIMUM_CONTRAST }}
         TITLE_SUFFIX: ${{ inputs.TITLE_SUFFIX }}
         ACTIVITY_TEXT: ${{ inputs.ACTIVITY_TEXT }}
         ACTIVITY_DAYS: ${{ inputs.ACTIVITY_DAYS }}

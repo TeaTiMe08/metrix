@@ -17,8 +17,9 @@ if __name__ == "__main__":
         commits_last_month = GitHubAPI.get_commits_last_month(Config.GITHUB_USERNAME, Config.TOKEN)
         activity_graphic = TextBuilder.generate_activity_graphic(commits_last_month)
         FrameBuilder.create_typing_frames(text_lines, activity_graphic)
-        GifBuilder.generate_gif_ffmpeg(frame_rate, Config.OUTPUT_GIF)
-        logger.info(f"GIF saved as {Config.OUTPUT_GIF}")
+        filename = f"{Config.OUTPUT_GIF}.gif"
+        GifBuilder.generate_gif_ffmpeg(frame_rate, filename)
+        logger.info(f"GIF saved as {filename}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
         raise
