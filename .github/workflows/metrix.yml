@@ -2,8 +2,8 @@ name: Generate Metrix
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Default schedule, runs everyevery day at midnight UTC
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   generate-metrix:
@@ -16,16 +16,17 @@ jobs:
       - name: Generate Metrix GIF
         uses: joanroig/metrix@main
         with:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: 'joanroig'
-          # FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'
-          # SYMBOL_FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'
-          # TEXT_COLOR: 'limegreen'
-          # BACKGROUND_COLOR: 'black'
-          # TITLE_SUFFIX: "'s GitHub Metrix"
-          # ACTIVITY_TEXT: 'Last month commit activity:'
-          # ACTIVITY_DAYS: '30'
-          # LOOP: 'false'
-          # WIDTH: '622'
-          # HEIGHT: '350'
-          # GLITCHES: 'true'
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }} # Do not change – uses PAT if available; otherwise falls back to GITHUB_TOKEN (limited to public data)
+          GITHUB_USERNAME: '${{ github.actor }}'                         # GitHub username to visualize – can be replaced with any username
+          # FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'                      # Path to primary font (currently unsupported unless you fork and embed the font manually)
+          # SYMBOL_FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'               # Path to symbol font (currently unsupported unless you fork and embed the font manually)
+          # TEXT_COLOR: 'random'                                         # CSS color name, hex code, or: 'random', 'complementary', 'contrasting', 'shade'
+          # BACKGROUND_COLOR: 'random'                                   # Same options as TEXT_COLOR
+          # MINIMUM_CONTRAST: '2'                                        # Minimum contrast ratio (range: 1–21)
+          # TITLE_SUFFIX: "'s GitHub Metrix"                             # Text appended to the username in the title
+          # ACTIVITY_TEXT: 'Last month commit activity:'                 # Text shown at the top of the activity graphic
+          # ACTIVITY_DAYS: '30'                                          # Number of days to render in the activity chart
+          # LOOP: 'false'                                                # Set to 'true' for an infinite-looping GIF, or 'false' for a one-shot
+          # WIDTH: '622'                                                 # Width of the generated GIF (in pixels)
+          # HEIGHT: '350'                                                # Height of the generated GIF (in pixels)
+          # GLITCHES: 'true'                                             # Set to 'true' to enable glitch effects in the GIF, or 'false' to disable them
