@@ -87,7 +87,7 @@ Follow these steps to integrate Metrix into your GitHub profile:
 
 5. **Create a GitHub Action**  
    In your repository, create a new GitHub Action by copying the contents of the [metrix.yml](.github/workflows/metrix.yml) file.  
-   Customize the parameters in the workflow, remembering to at least set your **GitHub username**.
+   Customize the parameters in the workflow as you like.
 
 6. **Run the Action**  
    Your action is now set up! Commit the changes and trigger the action to generate the metrics GIF.
