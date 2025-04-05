@@ -6,12 +6,22 @@ branding:
   color: "green"
 
 inputs:
+  # Authentication
   GITHUB_TOKEN:
     description: "GitHub token for authentication"
     required: true
   GITHUB_USERNAME:
     description: "GitHub username for displaying data"
     required: true
+  # Fonts
+  FONT_SIZE:
+    description: "Main font size"
+    required: false
+    default: "20"
+  SYMBOL_FONT_SIZE:
+    description: "Symbol font size"
+    required: false
+    default: "20"
   FONT_PATH:
     description: "Path to the font file"
     required: false
@@ -20,6 +30,7 @@ inputs:
     description: "Path to the symbol font file"
     required: false
     default: "metrix/assets/MxPlus_IBM_BIOS.ttf"
+  # Colors
   TEXT_COLOR:
     description: "Color of the text"
     required: false
@@ -32,10 +43,26 @@ inputs:
     description: "Minimum color contrast"
     required: false
     default: "2"
-  TITLE_SUFFIX:
-    description: "Suffix for the title"
+  # Content Settings
+  TEXT:
+    description: "Text to display"
     required: false
-    default: "'s GitHub Metrix"
+    default: |
+      "{username} GitHub Metrix
+      ----------------------
+
+      Joined GitHub: {created_at}
+      Followed by: {followers} Users
+      Owner of: {total_repos} Repos
+
+      Total Commits: {total_commits}
+      Total Stars: {total_stars}
+
+      Data updated: {updated_date}"
+  TYPING_CHARACTER:
+    description: "Character used for typing effect"
+    required: false
+    default: "█"
   ACTIVITY_TEXT:
     description: "Text for the activity section"
     required: false
@@ -44,6 +71,11 @@ inputs:
     description: "Number of days for activity"
     required: false
     default: "30"
+  # Display Settings
+  FPS:
+    description: "Frames per second for the GIF, recommended to be 50 or below"
+    required: false
+    default: "50"
   LOOP:
     description: "Enable or disable looping the GIF"
     required: false
@@ -55,11 +87,20 @@ inputs:
   HEIGHT:
     description: "Height of the GIF"
     required: false
-    default: "350"
+    default: "356"
+  # Glitch Effects
   GLITCHES:
     description: "Enable or disable glitches"
     required: false
     default: "true"
+  MAX_GLITCHES:
+    description: "Maximum amount of glitches at the same time"
+    required: false
+    default: "4"
+  GLITCH_PROBABILITY:
+    description: "Probability in percentage of a glitch happening in a frame, between 0 and 100"
+    required: false
+    default: "3"
 
 runs:
   using: "composite"
@@ -89,18 +130,24 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_USERNAME: ${{ inputs.GITHUB_USERNAME }}
+        FONT_SIZE: ${{ inputs.FONT_SIZE }}
+        SYMBOL_FONT_SIZE: ${{ inputs.SYMBOL_FONT_SIZE }}
         FONT_PATH: ${{ inputs.FONT_PATH }}
         SYMBOL_FONT_PATH: ${{ inputs.SYMBOL_FONT_PATH }}
         TEXT_COLOR: ${{ inputs.TEXT_COLOR }}
         BACKGROUND_COLOR: ${{ inputs.BACKGROUND_COLOR }}
         MINIMUM_CONTRAST: ${{ inputs.MINIMUM_CONTRAST }}
-        TITLE_SUFFIX: ${{ inputs.TITLE_SUFFIX }}
+        TEXT: ${{ inputs.TEXT }}
+        TYPING_CHARACTER: ${{ inputs.TYPING_CHARACTER }}
         ACTIVITY_TEXT: ${{ inputs.ACTIVITY_TEXT }}
         ACTIVITY_DAYS: ${{ inputs.ACTIVITY_DAYS }}
+        FPS: ${{ inputs.FPS }}
         LOOP: ${{ inputs.LOOP }}
         WIDTH: ${{ inputs.WIDTH }}
         HEIGHT: ${{ inputs.HEIGHT }}
         GLITCHES: ${{ inputs.GLITCHES }}
+        MAX_GLITCHES: ${{ inputs.MAX_GLITCHES }}
+        GLITCH_PROBABILITY: ${{ inputs.GLITCH_PROBABILITY }}
       run: python -u metrix/src/main.py
       shell: bash
 
