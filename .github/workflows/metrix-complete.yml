@@ -35,7 +35,7 @@ jobs:
           MINIMUM_CONTRAST: '2'                                           # Minimum contrast ratio between text and background. Range is from 1 to 21.
 
           # Content Settings
-          TEXT: |                                                         # Text for the Metrix display. Use placeholders for GitHub data like {username}, {created_at}, etc.
+          TEXT: |                                                         # Text for the Metrix display. Use variables for GitHub data like {username}, {created_at}, etc.
             {username}'s GitHub Metrix
             -----------------------
 
