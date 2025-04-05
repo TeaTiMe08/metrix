@@ -49,7 +49,7 @@ inputs:
     required: false
     default: |
       {username}'s GitHub Metrix
-      ----------------------
+      -----------------------------
 
       Joined GitHub: {created_at}
       Followed by: {followers} Users
