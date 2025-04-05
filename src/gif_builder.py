@@ -10,7 +10,7 @@ class GifBuilder:
     """Class to generate GIF using ffmpeg."""
 
     @staticmethod
-    def generate_gif_ffmpeg(frame_rate, output_file):
+    def generate_gif_ffmpeg(frame_rate, output_file_path):
         # Ensure the frame directory exists and contains frames
         frames_dir = Config.TEMP_FRAMES_DIR
         if not os.path.exists(frames_dir):
@@ -44,7 +44,7 @@ class GifBuilder:
                     dither="heckbert",
                     new="False",
                 )
-                .output(output_file, loop=Config.LOOP)
+                .output(output_file_path, loop=Config.LOOP)
                 .run(overwrite_output=True)
             )
         except ffmpeg.Error as e:

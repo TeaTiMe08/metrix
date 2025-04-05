@@ -12,7 +12,7 @@ class Config:
     VERSION = "2.0"
 
     # Debug Mode
-    DEBUG_MODE = os.getenv("DEBUG_MODE").lower() == "true"
+    DEBUG_MODE = os.getenv("DEBUG_MODE", "false").lower() == "true"
 
     # Authentication
     TOKEN = os.getenv("GITHUB_TOKEN") if not DEBUG_MODE else FileUtils.read_token_from_file()
@@ -49,5 +49,5 @@ class Config:
     GLITCH_SYMBOLS = ['☺', '☻', '♥', '♦', '♣', '♠', '•', '◘', '○', '◙', '█', '░', '▒', '▓', '☼', '♪', '♫', '■', '□', '▲', '►', '▼', '◄', '◊', '●']
 
     # Output Paths
-    OUTPUT_GIF_NAME = "metrix"
+    OUTPUT_FILE_PATH = os.getenv("OUTPUT_FILE_PATH")
     TEMP_FRAMES_DIR = "frames"

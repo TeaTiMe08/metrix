@@ -1,4 +1,5 @@
 
+import os
 from config import Config
 from file_utils import FileUtils
 from frame_builder import FrameBuilder
@@ -17,9 +18,9 @@ if __name__ == "__main__":
         commits_last_month = GitHubAPI.get_commits_last_month(Config.GITHUB_USERNAME, Config.TOKEN)
         activity_graphic = TextBuilder.generate_activity_graphic(commits_last_month)
         FrameBuilder.create_typing_frames(text_lines, activity_graphic)
-        filename = f"{Config.OUTPUT_GIF_NAME}.gif"
-        GifBuilder.generate_gif_ffmpeg(frame_rate, filename)
-        logger.info(f"GIF saved as {filename}")
+        file_path = os.path.abspath(f"{Config.OUTPUT_FILE_PATH}")
+        GifBuilder.generate_gif_ffmpeg(frame_rate, file_path)
+        logger.info(f"GIF saved as {file_path}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
         raise
