@@ -8,6 +8,9 @@ from file_utils import FileUtils
 class Config:
     """Class to handle configuration and environment variables."""
 
+    # Version
+    VERSION = "2.0"
+
     # Debug Mode
     DEBUG_MODE = os.getenv("DEBUG_MODE").lower() == "true"
 

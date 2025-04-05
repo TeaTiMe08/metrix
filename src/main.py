@@ -8,7 +8,7 @@ from log_config import logger
 from text_builder import TextBuilder
 
 if __name__ == "__main__":
-    logger.info("Starting...")
+    logger.info(f"Starting Metrix v{Config.VERSION}")
     try:
         FileUtils.cleanup_frames_folder(Config.TEMP_FRAMES_DIR)
         data = GitHubAPI.fetch_github_data(Config.GITHUB_USERNAME, Config.TOKEN)
