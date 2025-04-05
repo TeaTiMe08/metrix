@@ -1,0 +1,76 @@
+# GitHub Action template for generating a Metrix GIF
+# Source, documentation and examples: https://github.com/joanroig/metrix
+
+name: Generate Metrix
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  generate-metrix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Generate Metrix GIF
+        uses: joanroig/metrix@custom-text
+        with:
+          # Authentication
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}  # DO NOT MODIFY: Retrieves the GitHub token for authentication. Uses PAT if available, falls back to GITHUB_TOKEN for public data.
+          GITHUB_USERNAME: '${{ github.actor }}'                          # GitHub username for displaying data. Replace with any username if needed.
+          
+          # Font Settings
+          FONT_SIZE: '20'                                                 # Font size for the main text.
+          SYMBOL_FONT_SIZE: '20'                                          # Font size for symbols.
+          FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'                         # Path to the primary font file.
+          SYMBOL_FONT_PATH: 'assets/MxPlus_IBM_BIOS.ttf'                  # Path to the symbol font file.
+
+          # Color Settings
+          TEXT_COLOR: 'random'                                            # Color of the text. Options include CSS color names, hex codes, or 'random', 'complementary', 'contrasting', 'shade'. Default is 'random'.
+          BACKGROUND_COLOR: 'random'                                      # Background color. Same options as TEXT_COLOR.
+          MINIMUM_CONTRAST: '2'                                           # Minimum contrast ratio between text and background. Range is from 1 to 21.
+
+          # Content Settings
+          TEXT: |                                                         # Text for the Metrix display. Use placeholders for GitHub data like {username}, {created_at}, etc.
+            {username} GitHub Metrix
+            ----------------------
+
+            Joined GitHub: {created_at}
+            Followed by: {followers} Users
+            Owner of: {total_repos} Repos
+
+            Total Commits: {total_commits}
+            Total Stars: {total_stars}
+
+            Data updated: {updated_date}
+          
+          TYPING_CHARACTER: '█'                                           # Character used for the typing effect.
+          ACTIVITY_TEXT: 'Last month commit activity:'                    # Text for the activity section.
+          ACTIVITY_DAYS: '30'                                             # Number of days for the activity chart.
+
+          # Display Settings
+          FPS: '50'                                                       # Frames per second for the GIF. Recommended to be 50 or below.
+          LOOP: 'false'                                                   # Set to 'true' to loop the GIF or 'false' for a single loop.
+          WIDTH: '622'                                                    # Width of the generated GIF.
+          HEIGHT: '356'                                                   # Height of the generated GIF.
+
+          # Glitch Effects
+          GLITCHES: 'true'                                                # Enable or disable glitches in the GIF.
+          MAX_GLITCHES: '4'                                               # Maximum number of glitches that can occur simultaneously.
+          GLITCH_PROBABILITY: '3'                                         # Probability of a glitch happening in a frame, between 0 and 100.
+
+          # Output Settings
+          OUTPUT_FILE_PATH: 'metrix.gif'                                  # CAUTION: If modified, change the path in the step below. Output file path for the generated GIF.
+
+      - name: Commit and Push Metrix GIF
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add metrix.gif
+          git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
+          git push
+        shell: bash
