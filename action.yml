@@ -13,6 +13,15 @@ inputs:
   GITHUB_USERNAME:
     description: "GitHub username for displaying data"
     required: true
+  # Logging
+  LOG_LEVEL:
+    description: "Log level"
+    required: false
+    default: "INFO"
+  FFMPEG_LOG_LEVEL:
+    description: "FFmpeg log level"
+    required: false
+    default: "ERROR"
   # Fonts
   FONT_SIZE:
     description: "Main font size"
@@ -49,7 +58,7 @@ inputs:
     required: false
     default: |
       {username}'s GitHub Metrix
-      -----------------------------
+      ------------------------------
 
       Joined GitHub: {created_at}
       Followed by: {followers} Users
@@ -63,6 +72,10 @@ inputs:
     description: "Character used for typing effect"
     required: false
     default: "█"
+  ACTIVITY:
+    description: "Enable or disable the activity section"
+    required: false
+    default: "true"
   ACTIVITY_TEXT:
     description: "Text for the activity section"
     required: false
@@ -129,6 +142,8 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_USERNAME: ${{ inputs.GITHUB_USERNAME }}
+        LOG_LEVEL: ${{ inputs.LOG_LEVEL }}
+        FFMPEG_LOG_LEVEL: ${{ inputs.FFMPEG_LOG_LEVEL }}
         FONT_SIZE: ${{ inputs.FONT_SIZE }}
         SYMBOL_FONT_SIZE: ${{ inputs.SYMBOL_FONT_SIZE }}
         FONT_PATH: ${{ inputs.FONT_PATH }}
@@ -138,6 +153,7 @@ runs:
         MINIMUM_CONTRAST: ${{ inputs.MINIMUM_CONTRAST }}
         TEXT: ${{ inputs.TEXT }}
         TYPING_CHARACTER: ${{ inputs.TYPING_CHARACTER }}
+        ACTIVITY: ${{ inputs.ACTIVITY }}
         ACTIVITY_TEXT: ${{ inputs.ACTIVITY_TEXT }}
         ACTIVITY_DAYS: ${{ inputs.ACTIVITY_DAYS }}
         FPS: ${{ inputs.FPS }}

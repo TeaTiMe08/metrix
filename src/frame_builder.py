@@ -1,5 +1,7 @@
 import os
 import random
+import shutil
+from concurrent.futures import ThreadPoolExecutor
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -22,35 +24,46 @@ class FrameBuilder:
         return typed_text
 
     @staticmethod
-    def restore_glitches(typed_text, frame_count, glitches):
+    def restore_glitches(typed_text, frame_count, glitches, force_restore=False):
         for glitch in glitches[:]:
-            if frame_count >= glitch.restore_frame:
+            if force_restore or frame_count >= glitch.restore_frame:
                 typed_text = typed_text[:glitch.position] + glitch.original_char + typed_text[glitch.position + 1:]
                 glitches.remove(glitch)
         return typed_text
 
     @staticmethod
-    def create_frames(count, text, activity_graphic, text_font, symbol_font, frame_count):
-        for _ in range(count):
-            # TODO: sizes are hardcoded, font changes will break the graphic
-            img = Image.new("RGB", (Config.WIDTH, Config.HEIGHT), Config.BACKGROUND_COLOR)
-            draw = ImageDraw.Draw(img)
-            draw.text((10, 10), text, font=text_font, fill=Config.TEXT_COLOR)
-            draw.text((10, Config.HEIGHT - 60), Config.ACTIVITY_TEXT, font=symbol_font, fill=Config.TEXT_COLOR)
-            draw.text((10, Config.HEIGHT - 32), activity_graphic, font=symbol_font, fill=Config.TEXT_COLOR)
+    def create_frames(count, text, activity_graphic, text_color, background_color, text_font, symbol_font, frame_count, frames_dir):
+        # Generate the frame
+        img = Image.new("RGB", (Config.WIDTH, Config.HEIGHT), background_color)
+        draw = ImageDraw.Draw(img)
 
-            activity_length = len(activity_graphic)
-            draw.text((10, Config.HEIGHT - 32), "‾" * (activity_length), font=symbol_font, fill=Config.TEXT_COLOR)
-            draw.text((2, Config.HEIGHT - 33), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=Config.TEXT_COLOR)
-            draw.text((2, Config.HEIGHT - 30), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=Config.TEXT_COLOR)
-            draw.text((10, Config.HEIGHT - 11), "‾" * (activity_length), font=symbol_font, fill=Config.TEXT_COLOR)
+        # Draw text
+        draw.text((10, 10), text, font=text_font, fill=text_color)
+        draw.text((10, Config.HEIGHT - 60), Config.ACTIVITY_TEXT, font=symbol_font, fill=text_color)
+        draw.text((10, Config.HEIGHT - 32), activity_graphic, font=symbol_font, fill=text_color)
 
-            img.save(os.path.join(Config.TEMP_FRAMES_DIR, f"frame_{frame_count:04d}.png"))
+        # Draw frame box around activity graphic
+        activity_length = len(activity_graphic)
+        draw.text((10, Config.HEIGHT - 32), "‾" * activity_length, font=symbol_font, fill=text_color)
+        draw.text((2, Config.HEIGHT - 33), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
+        draw.text((2, Config.HEIGHT - 30), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
+        draw.text((10, Config.HEIGHT - 11), "‾" * activity_length, font=symbol_font, fill=text_color)
+
+        # Save the first frame
+        frame_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
+        img.save(frame_path)
+        frame_count += 1
+
+        # Copy the same frame for the remaining count-1 times
+        for _ in range(count - 1):
+            new_frame_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
+            shutil.copy(frame_path, new_frame_path)
             frame_count += 1
+
         return frame_count
 
     @staticmethod
-    def create_typing_frames(text_lines, activity_graphic):
+    def create_typing_frames(text_lines, activity_graphic, text_color, background_color, frames_dir):
         font = ImageFont.truetype(FileUtils.resolve_font_path(Config.FONT_PATH), Config.FONT_SIZE)
         symbol_font = ImageFont.truetype(FileUtils.resolve_font_path(Config.SYMBOL_FONT_PATH), Config.FONT_SIZE)
 
@@ -69,12 +82,17 @@ class FrameBuilder:
                 typed_text = FrameBuilder.apply_glitch(typed_text, frame_count, glitches, glitch_probability, max_glitches)
                 typed_text = FrameBuilder.restore_glitches(typed_text, frame_count, glitches)
 
-            frame_count = FrameBuilder.create_frames(1, typed_text + Config.TYPING_CHARACTER, activity_graphic, font, symbol_font, frame_count)
+            frame_count = FrameBuilder.create_frames(1, typed_text + Config.TYPING_CHARACTER, activity_graphic, text_color, background_color, font, symbol_font, frame_count, frames_dir)
 
         for _ in range(6):
             if Config.GLITCHES:
                 typed_text = FrameBuilder.restore_glitches(typed_text, frame_count, glitches)
-            frame_count = FrameBuilder.create_frames(20, typed_text + Config.TYPING_CHARACTER, activity_graphic, font, symbol_font, frame_count)
-            frame_count = FrameBuilder.create_frames(20, typed_text, activity_graphic, font, symbol_font, frame_count)
+            frame_count = FrameBuilder.create_frames(20, typed_text + Config.TYPING_CHARACTER, activity_graphic, text_color, background_color, font, symbol_font, frame_count, frames_dir)
+            frame_count = FrameBuilder.create_frames(20, typed_text, activity_graphic, text_color, background_color, font, symbol_font, frame_count, frames_dir)
+
+        # Final restoration of glitches
+        if Config.GLITCHES and glitches:
+            typed_text = FrameBuilder.restore_glitches(typed_text, frame_count, glitches, force_restore=True)
+            frame_count = FrameBuilder.create_frames(1, typed_text + Config.TYPING_CHARACTER, activity_graphic, text_color, background_color, font, symbol_font, frame_count, frames_dir)
 
         return frame_count

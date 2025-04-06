@@ -1,9 +1,12 @@
 import datetime
 from datetime import datetime, timedelta, timezone
+
 import requests
 from requests.exceptions import RequestException
+
 from config import Config
 from log_config import logger
+
 
 class GitHubAPI:
     """Class to handle GitHub API requests."""
@@ -18,6 +21,8 @@ class GitHubAPI:
         user_url = f"https://api.github.com/users/{username}"
         repos_url = f"https://api.github.com/users/{username}/repos?type=all&per_page=100"
         events_url = f"https://api.github.com/users/{username}/events"
+
+        logger.info(f"Fetching data for user: {username}")
 
         # Handling the user response with error management
         try:
@@ -62,6 +67,8 @@ class GitHubAPI:
 
     @staticmethod
     def get_total_commits(username, token):
+        logger.info(f"Fetching total commits for user: {username}")
+
         commits_url = f"https://api.github.com/search/commits?q=author:{username}&sort=author-date&order=desc&per_page=1"
 
         try:
@@ -74,7 +81,9 @@ class GitHubAPI:
         return response.json().get("total_count", 0)
 
     @staticmethod
-    def get_commits_last_month(username, token):
+    def get_commits_range(username, token):
+        logger.info(f"Fetching commit range for user: {username}")
+
         today = datetime.now(timezone.utc)
         start_date = today - timedelta(days=Config.ACTIVITY_DAYS)
         commits_url = f"https://api.github.com/search/commits?q=user:{username}+committer-date:{start_date.strftime('%Y-%m-%d')}..{today.strftime('%Y-%m-%d')}&sort=author-date&order=desc"

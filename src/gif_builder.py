@@ -10,9 +10,11 @@ class GifBuilder:
     """Class to generate GIF using ffmpeg."""
 
     @staticmethod
-    def generate_gif_ffmpeg(frame_rate, output_file_path):
+    def generate_gif_ffmpeg(frame_rate, output_file_path, frames_dir):
+        # Configure ffmpeg log level
+        FFMPEG_LOG_LEVEL = os.getenv("FFMPEG_LOG_LEVEL").lower()
+
         # Ensure the frame directory exists and contains frames
-        frames_dir = Config.TEMP_FRAMES_DIR
         if not os.path.exists(frames_dir):
             raise FileNotFoundError(f"The directory {frames_dir} does not exist.")
 
@@ -25,7 +27,7 @@ class GifBuilder:
         try:
             (
                 ffmpeg.input(frame_pattern, r=frame_rate)
-                .output(palette_file, vf="palettegen", r=frame_rate)
+                .output(palette_file, vf="palettegen", r=frame_rate, loglevel=FFMPEG_LOG_LEVEL)
                 .run(overwrite_output=True)
             )
         except ffmpeg.Error as e:
@@ -44,7 +46,7 @@ class GifBuilder:
                     dither="heckbert",
                     new="False",
                 )
-                .output(output_file_path, loop=Config.LOOP)
+                .output(output_file_path, loop=Config.LOOP, loglevel=FFMPEG_LOG_LEVEL)
                 .run(overwrite_output=True)
             )
         except ffmpeg.Error as e:

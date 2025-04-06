@@ -3,15 +3,19 @@ import textwrap
 
 from color_utils import ColorUtils
 from file_utils import FileUtils
+from log_config import logger
 
 
 class Config:
     """Class to handle configuration and environment variables."""
 
     # Version
-    VERSION = "2.0"
+    VERSION = "2.0.0"
+    logger.info(f"Metrix v{VERSION}")
+    logger.info(f"----------------------------------------------------")
+    logger.info(f"[CONFIGURATION] - Application setup")
 
-    # Debug Mode
+    # Debug
     DEBUG_MODE = os.getenv("DEBUG_MODE", "false").lower() == "true"
 
     # Authentication
@@ -33,6 +37,7 @@ class Config:
     # Content Settings
     TEXT = textwrap.dedent(os.getenv("TEXT"))
     TYPING_CHARACTER = os.getenv("TYPING_CHARACTER")
+    ACTIVITY = os.getenv("ACTIVITY").lower() == "true"
     ACTIVITY_TEXT = os.getenv("ACTIVITY_TEXT")
     ACTIVITY_DAYS = int(os.getenv("ACTIVITY_DAYS"))
 

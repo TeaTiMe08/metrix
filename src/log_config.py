@@ -1,4 +1,7 @@
 import logging
+import os
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True)
+# Configure logging
+LOG_LEVEL = os.getenv("LOG_LEVEL").upper()
+logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(levelname)s - %(message)s", force=True)
 logger = logging.getLogger()

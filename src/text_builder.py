@@ -12,11 +12,16 @@ from log_config import logger
 class TextBuilder:
     """Class to generate text and activity graphics."""
     @staticmethod
-    def generate_activity_graphic(commits_last_month):
-        if not commits_last_month:
+    def generate_activity_graphic():
+        if not Config.ACTIVITY:
             return ""
 
-        log_commits = [math.log(c + 1) for c in commits_last_month]
+        commits_range = GitHubAPI.get_commits_range(Config.GITHUB_USERNAME, Config.TOKEN)
+
+        if not commits_range:
+            return ""
+
+        log_commits = [math.log(c + 1) for c in commits_range]
         max_log = max(log_commits) if max(log_commits) > 0 else 1
 
         graphic = ""
@@ -53,8 +58,16 @@ class TextBuilder:
         return amount, text
 
     @staticmethod
-    def generate_text(user_data, repos):
+    def generate_text():
         text = Config.TEXT
+
+        # Check if text contains any variables to replace
+        if not re.search(r"{\w+}", text):
+            return text.splitlines()
+
+        data = GitHubAPI.fetch_github_data(Config.GITHUB_USERNAME, Config.TOKEN)
+        user_data = data["user"]
+        repos = data["repos"]
 
         total_commits = GitHubAPI.get_total_commits(Config.GITHUB_USERNAME, Config.TOKEN)
 
