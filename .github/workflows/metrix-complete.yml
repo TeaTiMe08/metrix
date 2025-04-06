@@ -49,6 +49,7 @@ jobs:
             Data updated: {updated_date}
           
           TYPING_CHARACTER: '█'                                           # Character used for the typing effect.
+          ACTIVITY: 'true'                                                # Enable or disable the activity section.
           ACTIVITY_TEXT: 'Last month commit activity:'                    # Text for the activity section.
           ACTIVITY_DAYS: '30'                                             # Number of days for the activity chart.
 
