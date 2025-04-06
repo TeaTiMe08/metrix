@@ -15,7 +15,7 @@ inputs:
     required: true
   # Logging
   LOG_LEVEL:
-    description: "Log level"
+    description: "Application log level"
     required: false
     default: "INFO"
   FFMPEG_LOG_LEVEL:
