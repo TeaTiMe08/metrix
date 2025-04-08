@@ -54,7 +54,7 @@
       "env": {
         "PYTHONPATH": "${workspaceFolder}/src",
         "DEBUG_MODE": "true",
-        "LOG_LEVEL": "ERROR",
+        "LOG_LEVEL": "INFO",
         "FFMPEG_LOG_LEVEL": "ERROR",
         "GITHUB_USERNAME": "joanroig",
         "GITHUB_TOKEN": "",

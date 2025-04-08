@@ -1,5 +1,6 @@
 <h1 align="center">Metrix</h1>
-<p align="center">Metrix generates a customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile.</p>
+<p align="center">Metrix generates a customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile. Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
+</p>
 
 <table align="center">
   <tr>
@@ -92,9 +93,15 @@ Follow these steps to integrate Metrix into your GitHub profile:
    Your action is now set up! Commit the changes and manually trigger the action to generate the metrics GIF.
 
 7. **(Optional) Customize your Metrix**  
-   You can use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file or read the [parameters](#parameters) section to find some parameters to add and customize in your action.
+   You can use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file or read the [parameters](#parameters) section to find some parameters to add and customize in your action. Lots of interesting color combinations can be found using the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
 
 ## Showcase
+
+<p align="center">
+<a href="https://joanroig.github.io/metrix-gallery">
+  <img alt="Showcase" src="showcase.gif">
+  </a>
+</p>
 
 Some examples are provided below, with the corresponding configuration for each:
 
@@ -163,8 +170,19 @@ with:
   GITHUB_USERNAME: 'joanroig'
   TEXT_COLOR: 'gold'
   BACKGROUND_COLOR: 'darkgoldenrod'
-  TITLE_SUFFIX: ' is booting up......'
   ACTIVITY_TEXT: 'I worked a lot lately...'
+  TEXT: |
+  {username} is booting up......
+  -----------------------
+
+  Joined GitHub {created_at}
+  Followed by {followers} Users
+  Owner of {total_repos} Repos
+
+  Total Commits: {total_commits}
+  Total Stars: {total_stars}
+
+  Data updated: {updated_date}
   LOOP: 'true'
 ```
 
