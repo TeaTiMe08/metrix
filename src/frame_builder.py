@@ -73,7 +73,14 @@ class FrameBuilder:
         glitches = []
         glitch_probability = Config.GLITCH_PROBABILITY
 
-        text = "\n".join(text_lines)
+        if isinstance(text_lines, str):
+            text = text_lines
+        else:
+            try:
+                text = "\n".join(text_lines)
+            except TypeError:
+                # If it's not iterable, convert to string as fallback
+                text = str(text_lines)
 
         for idx, char in enumerate(text):
             typed_text += char
