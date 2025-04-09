@@ -298,7 +298,22 @@ These variables are sourced directly from the GitHub User API data without any t
 1. Clone this repository and open it in your IDE (e.g., **VSCode**).
 2. Add your **PAT** token to the `.github_token` file.
 3. If you have **Conda** installed, run `rebuild_env.ps1` to set up the Conda environment, then execute `run.ps1` to start the application. Otherwise, read the two scripts to run the commands using Python.
-4. For debugging, use the provided **Run** and **Debug** configurations.
+
+### Running and Debugging with VS Code
+
+The project includes preconfigured launch settings in the `.vscode/launch.json` file that make it easy to run Metrix:
+
+1. **Python: Debug** - Runs the main application with a default configuration
+   - Renders a standard Metrix GIF with GitHub user stats
+   - Sets appropriate environment variables for colors, fonts, and display settings
+
+To run the application:
+
+1. Open the Debug panel in VS Code (Ctrl+Shift+D or click the debug icon in the sidebar)
+2. Select "Python: Debug" from the dropdown at the top
+3. Click the green play button or press F5
+
+For running test scripts and bulk generation tools, see the [tests documentation](src/tests/README.md).
 
 ## Credits
 
