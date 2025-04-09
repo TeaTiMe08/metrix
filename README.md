@@ -59,41 +59,79 @@
 
 Follow these steps to integrate Metrix into your GitHub profile:
 
-1. **Create a New Repository**  
-   Create a new repository to host your profile README. For guidance, refer to GitHub’s documentation on [setting up and managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
+1.  **Create a New Repository**  
+    Create a new repository to host your profile README. For guidance, refer to GitHub’s documentation on [setting up and managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
 
-2. **(Optional) Generate and Add a Personal Access Token (PAT)**  
-   By default, the action will only display public data. To also include private repository data, follow these steps:
+2.  **(Optional) Generate and Add a Personal Access Token (PAT)**  
+    By default, the action will only display public data. To also include private repository data, follow these steps:
 
-   1. Create a PAT token from [GitHub's Token Settings](https://github.com/settings/tokens) with the following permissions:
+    1. Create a PAT token from [GitHub's Token Settings](https://github.com/settings/tokens) with the following permissions:
 
-      - **repo**: Full control of private repositories
-      - **read:org**: Read org and team membership, and org projects
-      - **read:user**: Read all user profile data
+       - **repo**: Full control of private repositories
+       - **read:org**: Read org and team membership, and org projects
+       - **read:user**: Read all user profile data
 
-   2. In your repository, navigate to **Settings > Secrets and variables** and add a new secret:
+    2. In your repository, navigate to **Settings > Secrets and variables** and add a new secret:
 
-      - Name the secret `PAT_TOKEN`
-      - Paste the PAT token value generated in the previous step
+       - Name the secret `PAT_TOKEN`
+       - Paste the PAT token value generated in the previous step
 
-3. **Enable Workflow Permissions**  
-   In your repository settings, go to **Settings > Actions > General** and enable **"Read repository contents and packages permissions"** at the bottom of the page.
+3.  **Enable Workflow Permissions**  
+    In your repository settings, go to **Settings > Actions > General** and enable **"Read repository contents and packages permissions"** at the bottom of the page.
 
-4. **Add the Metrix GIF to Your README**  
-   Add the following to your `README.md` file:
+4.  **Add the Metrix GIF to Your README**  
+     Create a new `README.md` like this:
 
-   ```markdown
-   ![metrix](metrix.gif)
-   ```
+    ```markdown
+    <p align="center">
+      <a href="https://github.com/joanroig/metrix" title="View Metrix on GitHub">
+        <img src="metrix.gif"/>
+      </a>
+      <br/>
+      <sub>Infographic generated with <a href="https://github.com/joanroig/metrix">joanroig/metrix</a></sub>
+    </p>
+    ```
 
-5. **Create a GitHub Action**  
-   In your repository, create a new GitHub Action by copying the contents of the [metrix-basic.yml](.github/workflows/metrix-basic.yml) file.
+    Or add the following to your `README.md` file:
 
-6. **Run the Action**  
-   Your action is now set up! Commit the changes and manually trigger the action to generate the metrics GIF.
+    ```markdown
+    [![metrix](metrix.gif)](https://github.com/joanroig/metrix)
+    ```
 
-7. **(Optional) Customize your Metrix**  
-   You can use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file or read the [parameters](#parameters) section to find some parameters to add and customize in your action. Lots of interesting color combinations can be found using the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
+    You can see a live example here: https://github.com/joanroig/joanroig/blob/main/README.md
+
+5.  **Create a GitHub Action**  
+    In your repository, create a new file at `.github/workflows/metrix.yml` and paste the following content:
+
+    ```yaml
+    name: Generate Metrics GIF
+
+    on:
+      # Run manually from the Actions tab
+      workflow_dispatch:
+      # Run on schedule (adjust as needed)
+      schedule:
+        - cron: "0 0 * * 0" # Weekly on Sundays at midnight
+
+    jobs:
+      generate:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Generate Metrix
+            uses: joanroig/metrix@main
+            with:
+              GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+              GITHUB_USERNAME: ${{ github.actor }}
+              # You can add more customization parameters here
+    ```
+
+    You can find an example with all the default configuration in the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file.
+
+6.  **Run the Action**  
+    Your action is now set up! Commit the changes and manually trigger the action to generate the metrics GIF.
+
+7.  **(Optional) Customize your Metrix**  
+    You can use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file or read the [parameters](#parameters) section to find some parameters to add and customize in your action. Lots of interesting color combinations can be found using the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
 
 ## Showcase
 
@@ -208,32 +246,32 @@ with:
 
 Metrix is highly customizable through GitHub Action arguments. A complete example, including the default parameters, is provided: [metrix-complete.yml](.github/workflows/metrix-complete.yml). Below is the full list of available parameters:
 
-| **Parameter**      | **Description**                                                                                                        | **Example/Options**                                                                                 |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| GITHUB_TOKEN       | GitHub token used for authentication. Defaults to `PAT_TOKEN` if available.                                            | `${{ secrets.PAT_TOKEN \|\| secrets.GITHUB_TOKEN }}`                                                |
-| GITHUB_USERNAME    | GitHub username to display the metrics for.                                                                            | `${{ github.actor }}`                                                                               |
-| LOG_LEVEL          | Application log level.                                                                                                 | `'NOTSET'`, `'DEBUG'`, `'INFO'`, `'WARNING'`, `'ERROR'`, `'FATAL'`                                  |
-| FFMPEG_LOG_LEVEL   | FFmpeg log level.                                                                                                      | `'DEBUG'`, `'VERBOSE'`, `'INFO'`, `'WARNING'`, `'ERROR'`, `'FATAL'`, `'PANIC'`, `'QUIET'`           |
-| FONT_SIZE          | Font size for the main text. Note: Not tested, may cause rendering issues.                                             | `'20'`                                                                                              |
-| SYMBOL_FONT_SIZE   | Font size for symbols. Note: Not tested, may cause rendering issues.                                                   | `'20'`                                                                                              |
-| FONT_PATH          | Path to the primary font file. Note: Not tested, may cause rendering issues.                                           | `'assets/MxPlus_IBM_BIOS.ttf'`                                                                      |
-| SYMBOL_FONT_PATH   | Path to the symbol font file. Note: Not tested, may cause rendering issues.                                            | `'assets/MxPlus_IBM_BIOS.ttf'`                                                                      |
+| **Parameter**      | **Description**                                                                                                     | **Example/Options**                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| GITHUB_TOKEN       | GitHub token used for authentication. Defaults to `PAT_TOKEN` if available.                                         | `${{ secrets.PAT_TOKEN \|\| secrets.GITHUB_TOKEN }}`                                                |
+| GITHUB_USERNAME    | GitHub username to display the metrics for.                                                                         | `${{ github.actor }}`                                                                               |
+| LOG_LEVEL          | Application log level.                                                                                              | `'NOTSET'`, `'DEBUG'`, `'INFO'`, `'WARNING'`, `'ERROR'`, `'FATAL'`                                  |
+| FFMPEG_LOG_LEVEL   | FFmpeg log level.                                                                                                   | `'DEBUG'`, `'VERBOSE'`, `'INFO'`, `'WARNING'`, `'ERROR'`, `'FATAL'`, `'PANIC'`, `'QUIET'`           |
+| FONT_SIZE          | Font size for the main text. Note: Not tested, may cause rendering issues.                                          | `'20'`                                                                                              |
+| SYMBOL_FONT_SIZE   | Font size for symbols. Note: Not tested, may cause rendering issues.                                                | `'20'`                                                                                              |
+| FONT_PATH          | Path to the primary font file. Note: Not tested, may cause rendering issues.                                        | `'assets/MxPlus_IBM_BIOS.ttf'`                                                                      |
+| SYMBOL_FONT_PATH   | Path to the symbol font file. Note: Not tested, may cause rendering issues.                                         | `'assets/MxPlus_IBM_BIOS.ttf'`                                                                      |
 | TEXT_COLOR         | Color of the text. Options include CSS color names, hex codes, 'random', 'complementary', 'contrasting' or 'shade'. | `'blue'`,`'#c4a5a3'`,`'random'`, `'complementary'`, `'contrasting'`, `'shade'`, etc                 |
-| BACKGROUND_COLOR   | Background color. Same options as TEXT_COLOR.                                                                          | `'red'`,`'#6e2e2a'`,`'random'`, `'complementary'`, `'contrasting'`, `'shade'`, etc                  |
-| MINIMUM_CONTRAST   | Minimum contrast ratio between text and background (1 to 21).                                                          | `'2'`                                                                                               |
-| TEXT               | Text content for the Metrix display. Use variables for dynamic data. See [Text Variables](#variables) below.           | `'My name is {username}`<br>`I love {preferred_languages[1]},`<br>`and I have {total_stars} stars'` |
-| TYPING_CHARACTER   | Character used for the typing effect.                                                                                  | `'█'`                                                                                               |
-| ACTIVITY           | Enable or disable the activity section.                                                                                | `'true'` or `'false'`                                                                               |
-| ACTIVITY_TEXT      | Text to display for the activity section.                                                                              | `'Last month commit activity:'`                                                                     |
-| ACTIVITY_DAYS      | Number of days for the activity chart.                                                                                 | `'30'`                                                                                              |
-| FPS                | Frames per second for the GIF.                                                                                         | `'50'`                                                                                              |
-| LOOP               | Enable or disable infinite looping of the GIF.                                                                         | `'true'` or `'false'`                                                                               |
-| WIDTH              | Width of the generated GIF.                                                                                            | `'622'`                                                                                             |
-| HEIGHT             | Height of the generated GIF.                                                                                           | `'356'`                                                                                             |
-| GLITCHES           | Enable or disable glitches in the GIF.                                                                                 | `'true'` or `'false'`                                                                               |
-| MAX_GLITCHES       | Maximum number of glitches that can occur simultaneously.                                                              | `'4'`                                                                                               |
-| GLITCH_PROBABILITY | Probability of a glitch occurring in a frame (0 to 100).                                                               | `'3'`                                                                                               |
-| OUTPUT_FILE_PATH   | Path for the generated GIF.                                                                                            | `'metrix.gif'`                                                                                      |
+| BACKGROUND_COLOR   | Background color. Same options as TEXT_COLOR.                                                                       | `'red'`,`'#6e2e2a'`,`'random'`, `'complementary'`, `'contrasting'`, `'shade'`, etc                  |
+| MINIMUM_CONTRAST   | Minimum contrast ratio between text and background (1 to 21).                                                       | `'2'`                                                                                               |
+| TEXT               | Text content for the Metrix display. Use variables for dynamic data. See [Text Variables](#variables) below.        | `'My name is {username}`<br>`I love {preferred_languages[1]},`<br>`and I have {total_stars} stars'` |
+| TYPING_CHARACTER   | Character used for the typing effect.                                                                               | `'█'`                                                                                               |
+| ACTIVITY           | Enable or disable the activity section.                                                                             | `'true'` or `'false'`                                                                               |
+| ACTIVITY_TEXT      | Text to display for the activity section.                                                                           | `'Last month commit activity:'`                                                                     |
+| ACTIVITY_DAYS      | Number of days for the activity chart.                                                                              | `'30'`                                                                                              |
+| FPS                | Frames per second for the GIF.                                                                                      | `'50'`                                                                                              |
+| LOOP               | Enable or disable infinite looping of the GIF.                                                                      | `'true'` or `'false'`                                                                               |
+| WIDTH              | Width of the generated GIF.                                                                                         | `'622'`                                                                                             |
+| HEIGHT             | Height of the generated GIF.                                                                                        | `'356'`                                                                                             |
+| GLITCHES           | Enable or disable glitches in the GIF.                                                                              | `'true'` or `'false'`                                                                               |
+| MAX_GLITCHES       | Maximum number of glitches that can occur simultaneously.                                                           | `'4'`                                                                                               |
+| GLITCH_PROBABILITY | Probability of a glitch occurring in a frame (0 to 100).                                                            | `'3'`                                                                                               |
+| OUTPUT_FILE_PATH   | Path for the generated GIF.                                                                                         | `'metrix.gif'`                                                                                      |
 
 ### <a id="variables"></a>Text Variables (Curated GitHub API Data)
 
