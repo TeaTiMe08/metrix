@@ -1,5 +1,5 @@
 <h1 align="center">Metrix</h1>
-<p align="center">Metrix generates a customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile. Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
+<p align="center">Metrix generates a customizable retro-style GIF infographic showcasing GitHub metrics for your GitHub README profile. Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
 </p>
 
 <table align="center">
