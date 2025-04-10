@@ -53,11 +53,6 @@
       <a href="#purple-torvalds"><b>Purple Torvalds</b></a>
     </td>
   </tr>
-  <tr>
-    <td align="center">
-      <a href="#yellow-noglitch"><b>Yellow No-Glitch</b></a>
-    </td>
-  </tr>
 </table>
 
 ## Usage Guide
