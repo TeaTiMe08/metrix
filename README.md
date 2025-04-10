@@ -53,6 +53,11 @@
       <a href="#purple-torvalds"><b>Purple Torvalds</b></a>
     </td>
   </tr>
+  <tr>
+    <td align="center">
+      <a href="#yellow-noglitch"><b>Yellow No-Glitch</b></a>
+    </td>
+  </tr>
 </table>
 
 ## Usage Guide
@@ -178,8 +183,8 @@ with:
 ```
 with:
   GITHUB_USERNAME: 'joanroig'
-  TEXT_COLOR: 'white'
   BACKGROUND_COLOR: 'blue'
+  TEXT_COLOR: 'white'
   LOOP: 'true'
 ```
 
@@ -206,8 +211,8 @@ with:
 ```
 with:
   GITHUB_USERNAME: 'joanroig'
-  TEXT_COLOR: 'gold'
   BACKGROUND_COLOR: 'darkgoldenrod'
+  TEXT_COLOR: 'gold'
   ACTIVITY_TEXT: 'I worked a lot lately...'
   TEXT: |
   {username} is booting up......
@@ -238,6 +243,25 @@ with:
   ACTIVITY_TEXT: 'Last two weeks were intense:'
   ACTIVITY_DAYS: '14'
   LOOP: 'true'
+```
+
+---
+
+### <a id="customsize"></a> A gif with a custom size, a bigger font size, only text, a custom cursor and a generative text color shade based on a random light background color
+
+![customsize](img/metrix-customsize.gif)
+
+```
+with:
+  FONT_SIZE: '29',
+  BACKGROUND_COLOR: 'random-light',
+  TEXT_COLOR: 'shade',
+  TEXT: 'The size of the gif\ncan be customized!',
+  TYPING_CHARACTER: '|',
+  ACTIVITY: 'false',
+  LOOP: 'true'
+  WIDTH: '580'
+  HEIGHT: '80'
 ```
 
 ---
