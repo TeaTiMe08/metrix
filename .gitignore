@@ -166,7 +166,8 @@ tmp/
 frames*/
 github_cache.json
 commits_cache.json
-bulk*/
+output/
+logs/
 
 # github token
 .github_token

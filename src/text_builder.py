@@ -1,4 +1,3 @@
-
 import math
 import re
 from datetime import datetime
@@ -120,7 +119,15 @@ class TextBuilder:
             else:
                 variables[key] = value
 
+        # Create a DefaultDict-like behavior for formatting
+        class DefaultFormatter(dict):
+            def __missing__(self, key):
+                logger.error(f"Missing key: {key}")
+                return "?"
+
         try:
-            return text.format(**variables).splitlines()
-        except KeyError as e:
-            logger.error(f"Error: Missing or incorrect variable {e} in template.")
+            return text.format_map(DefaultFormatter(variables)).splitlines()
+        except Exception as e:
+            logger.error(f"Error formatting template: {e}")
+            # Still attempt to format with question marks for missing keys
+            return text.format_map(DefaultFormatter(variables)).splitlines()

@@ -12,84 +12,136 @@ class ColorUtils:
     VALID_METHODS = ["complementary", "contrasting", "shade"]
 
     @staticmethod
-    def resolve_colors(text_color, background_color, minimum_contrast):
-        method = ""
-        if text_color == background_color == "random":
-            method = random.choice(ColorUtils.VALID_METHODS)
-            if random.choice([True, False]):
-                text_color = ColorUtils.get_random_color()
-                background_color = ColorUtils.get_color(text_color, method)
-                logger.info(f"Text color (random): {text_color}")
-                logger.info(f"Background color ({method}): {background_color}")
-            else:
-                background_color = ColorUtils.get_random_color()
-                text_color = ColorUtils.get_color(background_color, method)
-                logger.info(f"Text color ({method}): {text_color}")
-                logger.info(f"Background color (random): {background_color}")
-        elif text_color in ColorUtils.VALID_METHODS and background_color in ColorUtils.VALID_METHODS:
-            text_color = ColorUtils.get_random_color()
-            method = background_color
-            background_color = ColorUtils.get_color(text_color, method)
-            logger.info(f"Text color (random): {text_color}")
-            logger.info(f"Background color ({text_color}): {background_color}")
-        elif text_color == "random" and background_color in ColorUtils.VALID_METHODS:
-            text_color = ColorUtils.get_random_color()
-            method = background_color
-            background_color = ColorUtils.get_color(text_color, method)
-            logger.info(f"Text color (random): {text_color}")
-            logger.info(f"Background color ({method}): {background_color}")
-        elif background_color == "random" and text_color in ColorUtils.VALID_METHODS:
-            background_color = ColorUtils.get_random_color()
-            method = text_color
-            text_color = ColorUtils.get_color(background_color, method)
-            logger.info(f"Text color ({method}): {text_color}")
-            logger.info(f"Background color (random): {background_color}")
-        elif text_color == "random":
-            method = random.choice(ColorUtils.VALID_METHODS)
-            text_color = ColorUtils.get_color(background_color, method)
-            logger.info(f"Text color ({method}): {text_color}")
-            logger.info(f"Background color: {background_color}")
-        elif background_color == "random":
-            method = random.choice(ColorUtils.VALID_METHODS)
-            background_color = ColorUtils.get_color(text_color, method)
-            logger.info(f"Text color: {text_color}")
-            logger.info(f"Background color ({method}): {background_color}")
-        elif text_color in ColorUtils.VALID_METHODS:
-            method = text_color
-            text_color = ColorUtils.get_color(background_color, method)
-            logger.info(f"Text color ({method}): {text_color}")
-            logger.info(f"Background color: {background_color}")
-        elif background_color in ColorUtils.VALID_METHODS:
-            method = background_color
-            background_color = ColorUtils.get_color(text_color, method)
-            logger.info(f"Text color: {text_color}")
-            logger.info(f"Background color ({method}): {background_color}")
-        else:
-            logger.info(f"Text color: {text_color}")
-            logger.info(f"Background color: {background_color}")
+    def log_color_selection(text_color, background_color, text_method="", bg_method="", text_brightness=None, bg_brightness=None):
+        """Logs the text and background color information with methods and brightness details."""
+        bg_info = f" ({bg_method}{'-'+bg_brightness if bg_method == 'random' and bg_brightness else ''})" if bg_method else ""
+        text_info = f" ({text_method}{'-'+text_brightness if text_method == 'random' and text_brightness else ''})" if text_method else ""
 
+        logger.info(f"Background color{bg_info}: {background_color}")
+        logger.info(f"Text color{text_info}: {text_color}")
+
+    @staticmethod
+    def resolve_colors(background_color, text_color, minimum_contrast):
+        method = ""
+        text_brightness = None
+        bg_brightness = None
+        modulation = None
+
+        # Check for random-light or random-dark in text_color
+        if text_color in ["random-light", "random-dark"]:
+            text_brightness = text_color.split("-")[1]
+            text_color = "random"
+
+        # Check for random-light or random-dark in background_color
+        if background_color in ["random-light", "random-dark"]:
+            bg_brightness = background_color.split("-")[1]
+            background_color = "random"
+
+        # Handle different combinations of text_color and background_color
+        is_text_random = text_color == "random"
+        is_bg_random = background_color == "random"
+        is_text_method = text_color in ColorUtils.VALID_METHODS
+        is_bg_method = background_color in ColorUtils.VALID_METHODS
+
+        # Both text and background are random
+        if is_text_random and is_bg_random:
+            # Get independent random colors for both text and background
+            text_color = ColorUtils.get_random_color(text_brightness)
+            background_color = ColorUtils.get_random_color(bg_brightness)
+            ColorUtils.log_color_selection(text_color, background_color, "random", "random", text_brightness, bg_brightness)
+
+        # Both text and background are valid methods
+        elif is_text_method and is_bg_method:
+            logger.warning("Both text and background colors are methods. Using random color for text.")
+            text_color = ColorUtils.get_random_color(text_brightness)
+            method = background_color
+            background_color = ColorUtils.get_color(text_color, method)
+            ColorUtils.log_color_selection(text_color, background_color, "random", method, text_brightness, bg_brightness)
+
+        # One is random, one is a method
+        elif is_text_random and is_bg_method:
+            text_color = ColorUtils.get_random_color(text_brightness)
+            method = background_color
+            background_color = ColorUtils.get_color(text_color, method)
+            ColorUtils.log_color_selection(text_color, background_color, "random", method, text_brightness, bg_brightness)
+        elif is_bg_random and is_text_method:
+            background_color = ColorUtils.get_random_color(bg_brightness)
+            method = text_color
+            text_color = ColorUtils.get_color(background_color, method)
+            ColorUtils.log_color_selection(text_color, background_color, method, "random", text_brightness, bg_brightness)
+
+        # Only text or background is random
+        elif is_text_random:
+            text_color = ColorUtils.get_random_color(text_brightness)
+            method = random.choice(ColorUtils.VALID_METHODS)
+            ColorUtils.log_color_selection(text_color, background_color, "random", "", text_brightness, bg_brightness)
+        elif is_bg_random:
+            background_color = ColorUtils.get_random_color(bg_brightness)
+            method = random.choice(ColorUtils.VALID_METHODS)
+            ColorUtils.log_color_selection(text_color, background_color, "", "random", text_brightness, bg_brightness)
+
+        # Only text or background is a method
+        elif is_text_method:
+            method = text_color
+            text_color = ColorUtils.get_color(background_color, method)
+            ColorUtils.log_color_selection(text_color, background_color, method, "", text_brightness, bg_brightness)
+        elif is_bg_method:
+            method = background_color
+            background_color = ColorUtils.get_color(text_color, method)
+            ColorUtils.log_color_selection(text_color, background_color, "", method, text_brightness, bg_brightness)
+
+        # No special processing needed
+        else:
+            ColorUtils.log_color_selection(text_color, background_color)
+
+        # Check and adjust contrast if needed
         contrast = round(ColorUtils.contrast_ratio(text_color, background_color), 2)
         contrast_text = f"[{contrast}]"
 
         if contrast < minimum_contrast:
-            logger.warning(f"Contrast ratio ({contrast}) is below ({minimum_contrast}). Adjusting text color...")
+            logger.warning(f"Contrast ratio ({contrast}) is below ({minimum_contrast}). Adjusting colors...")
             iteration_count = 0
             max_iterations = 10
-            original_text_color = text_color
+
+            # Determine which color to adjust based on which is a function or random
+            color_to_adjust = "text"
+
+            # If one color is random and the other is fixed, adjust the random one
+            if is_text_random and not is_bg_random and not is_bg_method:
+                color_to_adjust = "text"
+            elif is_bg_random and not is_text_random and not is_text_method:
+                color_to_adjust = "background"
+            # If one is a method and one is fixed, adjust the method one
+            elif is_bg_method and not is_text_method:
+                color_to_adjust = "background"
+            elif is_text_method and not is_bg_method:
+                color_to_adjust = "text"
+            # If neither is a function or random, randomly choose one
+            elif not is_bg_method and not is_text_method and not is_bg_random and not is_text_random:
+                color_to_adjust = random.choice(["text", "background"])
+
+            original_color = text_color if color_to_adjust == "text" else background_color
 
             while contrast < minimum_contrast and iteration_count < max_iterations:
-                text_color = ColorUtils.get_random_shade_of_color(text_color)
+                if color_to_adjust == "text":
+                    text_color = ColorUtils.get_random_shade_of_color(text_color)
+                else:
+                    background_color = ColorUtils.get_random_shade_of_color(background_color)
+
                 contrast = round(ColorUtils.contrast_ratio(text_color, background_color), 2)
                 iteration_count += 1
 
             if iteration_count == max_iterations:
                 logger.error("ERROR: Max iterations reached, contrast may still be too low.")
                 contrast_text = f"[{contrast}](MOD_ERROR)"
+                modulation = "ERROR"
             else:
-                logger.info(f"Text color (modulated): {text_color}")
-                contrast_text = f"[{contrast}](MOD_{original_text_color})"
+                adjusted_color = text_color if color_to_adjust == "text" else background_color
+                logger.info(f"{color_to_adjust.title()} color ({original_color} modulated): {adjusted_color}")
+                contrast_text = f"[{contrast}]"
+                modulation = f"{original_color}->{adjusted_color}"
 
-        return text_color, background_color, method, contrast_text
+        return background_color, text_color, method, contrast_text, modulation
 
     @staticmethod
     def get_color(base_color, method):
@@ -102,14 +154,31 @@ class ColorUtils:
         return base_color  # Default fallback
 
     @staticmethod
+    def hex_to_rgb(hex_color):
+        """Convert hex color code to RGB tuple (0-1 range)."""
+        # Remove # if present
+        hex_color = hex_color.lstrip('#')
+        # Convert to RGB
+        r = int(hex_color[0:2], 16) / 255.0
+        g = int(hex_color[2:4], 16) / 255.0
+        b = int(hex_color[4:6], 16) / 255.0
+        return (r, g, b)
+
+    @staticmethod
     def contrast_ratio(c1, c2):
         """Calculate the contrast ratio between two colors (using luminance)."""
 
         # Ensure the colors are in RGB format (matplotlib returns [0, 1] scale)
-        if c1 in mcolors.CSS4_COLORS:
-            c1 = mcolors.to_rgb(c1)
-        if c2 in mcolors.CSS4_COLORS:
-            c2 = mcolors.to_rgb(c2)
+        if isinstance(c1, str):
+            if c1.startswith('#'):
+                c1 = ColorUtils.hex_to_rgb(c1)
+            elif c1 in mcolors.CSS4_COLORS:
+                c1 = mcolors.to_rgb(c1)
+        if isinstance(c2, str):
+            if c2.startswith('#'):
+                c2 = ColorUtils.hex_to_rgb(c2)
+            elif c2 in mcolors.CSS4_COLORS:
+                c2 = mcolors.to_rgb(c2)
 
         def luminance(c):
             """Calculate the luminance of a color."""
@@ -145,27 +214,64 @@ class ColorUtils:
         return sum((x - y) ** 2 for x, y in zip(c1, c2)) ** 0.5
 
     @staticmethod
-    def get_random_color():
-        """Returns a random, readable color name."""
+    def get_random_color(brightness=None):
+        """
+        Returns a random, readable color name.
+
+        Args:
+            brightness (str, optional): 'light' for bright colors, 'dark' for dark colors, None for any color.
+        """
+        if brightness == "light":
+            return ColorUtils.generate_random_light_color()
+        elif brightness == "dark":
+            return ColorUtils.generate_random_dark_color()
         return random.choice(ColorUtils.NAMED_COLORS)
 
     @staticmethod
-    def generate_random_bright_color():
-        """Generates a random bright color (high saturation & brightness)."""
+    def generate_random_light_color():
+        """Generates a random bright color (high brightness)."""
         h = random.random()  # Random hue
-        s = random.uniform(0.7, 1.0)  # High saturation
-        v = random.uniform(0.8, 1.0)  # High brightness
+        s = random.uniform(0.4, 0.9)  # Mix of saturated and pastel colors
+        v = random.uniform(0.7, 0.95)  # Consistently high brightness
+
+        # Convert to RGB
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
+
+        # Boost one random channel slightly to add variety
+        boost_channel = random.randint(0, 2)
+        boost_amount = random.uniform(0.05, 0.15)
+
+        if boost_channel == 0:
+            r = min(1.0, r + boost_amount)
+        elif boost_channel == 1:
+            g = min(1.0, g + boost_amount)
+        else:
+            b = min(1.0, b + boost_amount)
+
         closest_color = ColorUtils.closest_color_name(r, g, b)
         return closest_color
 
     @staticmethod
-    def generate_random_dull_color():
-        """Generates a random dull color (low saturation & brightness)."""
+    def generate_random_dark_color():
+        """Generates a random dark color (low brightness)."""
         h = random.random()  # Random hue
-        s = random.uniform(0.0, 0.8)  # Low saturation
-        v = random.uniform(0.1, 0.4)  # Low brightness
+        s = random.uniform(0.6, 1.0)  # Higher saturation for richer dark colors
+        v = random.uniform(0.2, 0.45)  # Controlled brightness range to avoid black
+
+        # Convert to RGB
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
+
+        # Boost one random channel slightly to avoid pure black/gray
+        boost_channel = random.randint(0, 2)
+        boost_amount = random.uniform(0.05, 0.15)
+
+        if boost_channel == 0:
+            r = min(1.0, r + boost_amount)
+        elif boost_channel == 1:
+            g = min(1.0, g + boost_amount)
+        else:
+            b = min(1.0, b + boost_amount)
+
         closest_color = ColorUtils.closest_color_name(r, g, b)
         return closest_color
 
@@ -188,7 +294,7 @@ class ColorUtils:
         # Check if the color is gray or close to gray
         if ColorUtils.is_gray(r, g, b):
             # If gray, return a highly saturated color to provide contrast
-            return ColorUtils.generate_random_bright_color()
+            return ColorUtils.generate_random_light_color()
 
         # Convert to HSV
         h, s, v = colorsys.rgb_to_hsv(r, g, b)
@@ -219,16 +325,16 @@ class ColorUtils:
         # Check if the color is gray or close to gray
         if ColorUtils.is_gray(r, g, b):
             # If gray, return a highly saturated color to provide contrast
-            return ColorUtils.generate_random_bright_color()
+            return ColorUtils.generate_random_light_color()
 
         # Convert to HSV
         h, s, v = colorsys.rgb_to_hsv(r, g, b)
 
         # Adjust for very dark or very bright colors
         if v < 0.1:  # Too dark → generate a bright color
-            return ColorUtils.generate_random_bright_color()
+            return ColorUtils.generate_random_light_color()
         if v > 0.9:  # Too bright → generate a dull color
-            return ColorUtils.generate_random_dull_color()
+            return ColorUtils.generate_random_dark_color()
 
         # Compute complementary hue
         h = (h + 0.5) % 1.0  # Complementary color
@@ -272,9 +378,9 @@ class ColorUtils:
         elif ColorUtils.is_gray(r, g, b):
             # If gray, generate a random color far from gray
             if random.choice([True, False]):
-                return ColorUtils.generate_random_bright_color()
+                return ColorUtils.generate_random_light_color()
             else:
-                return ColorUtils.generate_random_dull_color()
+                return ColorUtils.generate_random_dark_color()
         else:
             # Randomly decide whether to darken or lighten the color
             darken_factor = random.uniform(0.2, 0.5)

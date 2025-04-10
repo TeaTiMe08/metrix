@@ -40,12 +40,12 @@ inputs:
     required: false
     default: "assets/MxPlus_IBM_BIOS.ttf"
   # Colors
-  TEXT_COLOR:
-    description: "Color of the text"
+  BACKGROUND_COLOR:
+    description: "Color of the background (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade')"
     required: false
     default: "random"
-  BACKGROUND_COLOR:
-    description: "Color of the background"
+  TEXT_COLOR:
+    description: "Color of the text (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade')"
     required: false
     default: "random"
   MINIMUM_CONTRAST:
@@ -148,8 +148,8 @@ runs:
         SYMBOL_FONT_SIZE: ${{ inputs.SYMBOL_FONT_SIZE }}
         FONT_PATH: ${{ inputs.FONT_PATH }}
         SYMBOL_FONT_PATH: ${{ inputs.SYMBOL_FONT_PATH }}
-        TEXT_COLOR: ${{ inputs.TEXT_COLOR }}
         BACKGROUND_COLOR: ${{ inputs.BACKGROUND_COLOR }}
+        TEXT_COLOR: ${{ inputs.TEXT_COLOR }}
         MINIMUM_CONTRAST: ${{ inputs.MINIMUM_CONTRAST }}
         TEXT: ${{ inputs.TEXT }}
         TYPING_CHARACTER: ${{ inputs.TYPING_CHARACTER }}

@@ -7,7 +7,6 @@ from config import Config
 from file_utils import FileUtils
 from frame_builder import FrameBuilder
 from gif_builder import GifBuilder
-from github_api import GitHubAPI
 from log_config import logger
 from text_builder import TextBuilder
 
@@ -20,8 +19,8 @@ if __name__ == "__main__":
 
         while True:
             # Restore original values on each iteration
-            Config.TEXT_COLOR, Config.BACKGROUND_COLOR, Config.METHOD, Config.CONTRAST = ColorUtils.resolve_colors(text_color, background_color, Config.MINIMUM_CONTRAST)
-            file_path = os.path.abspath(f"src/tests/bulk/{Config.BACKGROUND_COLOR}_{Config.TEXT_COLOR}.gif")
+            Config.BACKGROUND_COLOR, Config.TEXT_COLOR, Config.METHOD, Config.CONTRAST, _ = ColorUtils.resolve_colors(background_color, text_color, Config.MINIMUM_CONTRAST)
+            file_path = os.path.abspath(f"output/random_combinations/{Config.BACKGROUND_COLOR}_{Config.TEXT_COLOR}.gif")
 
             # Check if the file already exists
             if os.path.exists(file_path):

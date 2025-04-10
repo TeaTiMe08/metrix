@@ -24,8 +24,8 @@
         "SYMBOL_FONT_SIZE": "20",
         "FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
         "SYMBOL_FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
-        "TEXT_COLOR": "random",
         "BACKGROUND_COLOR": "random",
+        "TEXT_COLOR": "random",
         "MINIMUM_CONTRAST": "2",
         "TEXT": "{username}'s GitHub Metrix\n------------------------\n\nJoined GitHub: {created_at}\nFollowed by: {followers} Users\nOwner of: {total_repos} Repos\n\nTotal Commits: {total_commits}\nTotal Stars: {total_stars}\n\nData updated: {updated_date}",
         "TYPING_CHARACTER": "█",
@@ -43,7 +43,7 @@
       }
     },
     {
-      "name": "Python: Bulk Generate",
+      "name": "Python: Bulk Generate All",
       "type": "debugpy",
       "request": "launch",
       "program": "src/tests/main_bulk_generate.py",
@@ -62,8 +62,8 @@
         "SYMBOL_FONT_SIZE": "20",
         "FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
         "SYMBOL_FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
-        "TEXT_COLOR": "random",
         "BACKGROUND_COLOR": "random",
+        "TEXT_COLOR": "random",
         "MINIMUM_CONTRAST": "2",
         "TEXT": "joanroig's GitHub Metrix\n------------------------\n\nJoined GitHub: 2015-05-14\nFollowed by: 22 Users\nOwner of: 82 Repos\n\nTotal Commits: 2098\nTotal Stars: 131\n\nData updated: 2025-04-06",
         "TYPING_CHARACTER": "█",
@@ -92,7 +92,7 @@
       "env": {
         "PYTHONPATH": "${workspaceFolder}/src",
         "DEBUG_MODE": "true",
-        "LOG_LEVEL": "ERROR",
+        "LOG_LEVEL": "INFO",
         "FFMPEG_LOG_LEVEL": "ERROR",
         "GITHUB_USERNAME": "joanroig",
         "GITHUB_TOKEN": "",
@@ -100,8 +100,8 @@
         "SYMBOL_FONT_SIZE": "20",
         "FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
         "SYMBOL_FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
-        "TEXT_COLOR": "random",
         "BACKGROUND_COLOR": "random",
+        "TEXT_COLOR": "random",
         "MINIMUM_CONTRAST": "2",
         "TEXT": "joanroig's GitHub Metrix\n------------------------\n\nJoined GitHub: 2015-05-14\nFollowed by: 22 Users\nOwner of: 82 Repos\n\nTotal Commits: 2098\nTotal Stars: 131\n\nData updated: 2025-04-06",
         "TYPING_CHARACTER": "█",
@@ -119,7 +119,46 @@
       }
     },
     {
-      "name": "Python: Export Combinations",
+      "name": "Python: Color Config Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "src/tests/main_color_configs_tests.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": [],
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "DEBUG_MODE": "true",
+        "LOG_LEVEL": "INFO",
+        "FFMPEG_LOG_LEVEL": "ERROR",
+        "LOG_FILE": "logs/color_configs_tests.log",
+        "GITHUB_USERNAME": "joanroig",
+        "GITHUB_TOKEN": "",
+        "FONT_SIZE": "20",
+        "SYMBOL_FONT_SIZE": "20",
+        "FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
+        "SYMBOL_FONT_PATH": "assets/MxPlus_IBM_BIOS.ttf",
+        "BACKGROUND_COLOR": "#000000",
+        "TEXT_COLOR": "#ffffff",
+        "MINIMUM_CONTRAST": "2",
+        "TEXT": "joanroig's GitHub Metrix\n------------------------\n\nJoined GitHub: 2015-05-14\nFollowed by: 22 Users\nOwner of: 82 Repos\n\nTotal Commits: 2098\nTotal Stars: 131\n\nData updated: 2025-04-06",
+        "TYPING_CHARACTER": "█",
+        "ACTIVITY": "false",
+        "ACTIVITY_TEXT": "Last month commit activity:",
+        "ACTIVITY_DAYS": "30",
+        "FPS": "50",
+        "LOOP": "true",
+        "WIDTH": "622",
+        "HEIGHT": "356",
+        "GLITCHES": "true",
+        "MAX_GLITCHES": "4",
+        "GLITCH_PROBABILITY": "3",
+        "OUTPUT_FILE_PATH": "metrix.gif"
+      }
+    },
+    {
+      "name": "Python: Export JSON Combinations",
       "type": "debugpy",
       "request": "launch",
       "program": "src/tests/main_export_combinations.py",
@@ -128,8 +167,7 @@
       "args": [],
       "justMyCode": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/src",
-        "DEBUG_MODE": "true"
+        "PYTHONPATH": "${workspaceFolder}/src"
       }
     }
   ]

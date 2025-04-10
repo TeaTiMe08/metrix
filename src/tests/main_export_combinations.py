@@ -7,7 +7,7 @@ from color_utils import ColorUtils
 from log_config import logger
 from tests.color_utils_extended import ColorUtilsExtended
 
-OUTPUT_FILE = "./src/tests/color_combinations.json"
+OUTPUT_FILE = "output/color_combinations.json"
 
 def detect_combination_types(color1, color2, contrast):
     types = []

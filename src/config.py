@@ -29,10 +29,10 @@ class Config:
     SYMBOL_FONT_PATH = os.getenv("SYMBOL_FONT_PATH")
 
     # Colors
-    _TEXT_COLOR = os.getenv("TEXT_COLOR").lower()
     _BACKGROUND_COLOR = os.getenv("BACKGROUND_COLOR").lower()
-    MINIMUM_CONTRAST = int(os.getenv("MINIMUM_CONTRAST"))
-    TEXT_COLOR, BACKGROUND_COLOR, METHOD, CONTRAST = ColorUtils.resolve_colors(_TEXT_COLOR, _BACKGROUND_COLOR, MINIMUM_CONTRAST)
+    _TEXT_COLOR = os.getenv("TEXT_COLOR").lower()
+    MINIMUM_CONTRAST = float(os.getenv("MINIMUM_CONTRAST"))
+    BACKGROUND_COLOR, TEXT_COLOR, METHOD, CONTRAST, COLOR_MODULATION = ColorUtils.resolve_colors(_BACKGROUND_COLOR, _TEXT_COLOR, MINIMUM_CONTRAST)
 
     # Content Settings
     TEXT = textwrap.dedent(os.getenv("TEXT"))

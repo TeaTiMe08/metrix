@@ -13,8 +13,13 @@ from text_builder import TextBuilder
 
 
 def load_color_combinations(file_path):
-    with open(file_path, "r") as f:
-        return json.load(f)
+    try:
+        with open(file_path, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.error(f"Failed to load color combinations: {e}")
+        logger.error("Please run the launch.json configuration \"Python: Export JSON Combinations\" first.")
+        raise SystemExit("Color combinations file not found or invalid. Run required configuration first.")
 
 
 def process_combination(queue, thread_id):
@@ -29,7 +34,7 @@ def process_combination(queue, thread_id):
             background_color = combination["color1"]
             text_color = combination["color2"]
 
-            file_path = os.path.abspath(f"src/tests/bulk/{background_color}_{text_color}.gif")
+            file_path = os.path.abspath(f"output/all_combinations/{background_color}_{text_color}.gif")
 
             # Check if the file already exists
             if os.path.exists(file_path):
@@ -80,7 +85,7 @@ def process_combination(queue, thread_id):
 if __name__ == "__main__":
     try:
         # Load the color combinations from the JSON file
-        color_combinations = load_color_combinations("src/tests/color_combinations.json")
+        color_combinations = load_color_combinations("output/color_combinations.json")
 
         # Define the number of threads to use (adjust as necessary)
         num_threads = 4

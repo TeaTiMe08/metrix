@@ -39,15 +39,16 @@ class FrameBuilder:
 
         # Draw text
         draw.text((10, 10), text, font=text_font, fill=text_color)
-        draw.text((10, Config.HEIGHT - 60), Config.ACTIVITY_TEXT, font=symbol_font, fill=text_color)
-        draw.text((10, Config.HEIGHT - 32), activity_graphic, font=symbol_font, fill=text_color)
 
-        # Draw frame box around activity graphic
-        activity_length = len(activity_graphic)
-        draw.text((10, Config.HEIGHT - 32), "‾" * activity_length, font=symbol_font, fill=text_color)
-        draw.text((2, Config.HEIGHT - 33), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
-        draw.text((2, Config.HEIGHT - 30), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
-        draw.text((10, Config.HEIGHT - 11), "‾" * activity_length, font=symbol_font, fill=text_color)
+        if Config.ACTIVITY:
+            draw.text((10, Config.HEIGHT - 60), Config.ACTIVITY_TEXT, font=symbol_font, fill=text_color)
+            draw.text((10, Config.HEIGHT - 32), activity_graphic, font=symbol_font, fill=text_color)
+            # Draw frame box around activity graphic
+            activity_length = len(activity_graphic)
+            draw.text((10, Config.HEIGHT - 32), "‾" * activity_length, font=symbol_font, fill=text_color)
+            draw.text((2, Config.HEIGHT - 33), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
+            draw.text((2, Config.HEIGHT - 30), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
+            draw.text((10, Config.HEIGHT - 11), "‾" * activity_length, font=symbol_font, fill=text_color)
 
         # Save the first frame
         frame_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
