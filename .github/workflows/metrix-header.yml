@@ -1,9 +1,12 @@
+# GitHub Action that generates a custom Metrix GIF, used as the header of the README.md. The resulting file is pushed to a separate branch to not pollute the commit history of the main branch. 
+# Source, documentation and examples: https://github.com/joanroig/metrix
+
 name: Generate Metrix Header
 
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   generate-metrix:
@@ -12,25 +15,25 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          ref: header-build-action  # Checkout the target branch
 
       - name: Generate Metrix GIF
         uses: joanroig/metrix@main
         with:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: '${{ github.actor }}'
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}  # DO NOT MODIFY: Retrieves the GitHub token for authentication. Uses PAT if available, falls back to GITHUB_TOKEN for public data.
+          GITHUB_USERNAME: '${{ github.actor }}'                          # GitHub username for displaying data. Replace with any username if needed.
           FONT_SIZE: '36'
           TEXT: 'Metrix'
           ACTIVITY: 'False'
           WIDTH: '272'
-          HEIGHt: '58'
+          HEIGHT: '58'
           GLITCHES: 'false'
+          OUTPUT_FILE_PATH: 'metrix-header.gif'
 
-      - name: Commit and Push changes
+      - name: Commit and Push Metrix GIF
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add .
-          git commit -m "Update Metrix GIF" || echo "No changes to commit"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add metrix-header.gif
+          git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
           git push origin header-build-action
+        shell: bash
