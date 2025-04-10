@@ -36,5 +36,6 @@ jobs:
           git add metrix-header.gif
           git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
           git checkout -B header-build-action
+          git pull --rebase origin header-build-action
           git push origin header-build-action
         shell: bash
