@@ -1,0 +1,36 @@
+name: Generate Metrix Header
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  generate-metrix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: header-build-action  # Checkout the target branch
+
+      - name: Generate Metrix GIF
+        uses: joanroig/metrix@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: '${{ github.actor }}'
+          FONT_SIZE: '36'
+          TEXT: 'Metrix'
+          ACTIVITY: 'False'
+          WIDTH: '272'
+          HEIGHt: '58'
+          GLITCHES: 'false'
+
+      - name: Commit and Push changes
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add .
+          git commit -m "Update Metrix GIF" || echo "No changes to commit"
+          git push origin header-build-action
