@@ -103,23 +103,26 @@ class ColorUtils:
             iteration_count = 0
             max_iterations = 10
 
-            # Determine which color to adjust based on which is a function or random
-            color_to_adjust = "text"
+            # Determine which color to adjust. Default: pick randomly (used for symmetric cases: fixed vs fixed, method vs method, random vs random)
+            color_to_adjust = random.choice(["text", "background"])
 
-            # If one color is random and the other is fixed, adjust the random one
-            if is_text_random and not is_bg_random and not is_bg_method:
+            # Case 1: Method vs Random → adjust method one
+            if is_bg_method and is_text_random:
+                color_to_adjust = "background"
+            elif is_text_method and is_bg_random:
                 color_to_adjust = "text"
+
+            # Case 2: Method vs Fixed → adjust method one
+            elif is_bg_method and not is_text_method and not is_text_random:
+                color_to_adjust = "background"
+            elif is_text_method and not is_bg_method and not is_bg_random:
+                color_to_adjust = "text"
+
+            # Case 3: Random vs Fixed → adjust random one
             elif is_bg_random and not is_text_random and not is_text_method:
                 color_to_adjust = "background"
-            # If one is a method and one is fixed, adjust the method one
-            elif is_bg_method and not is_text_method:
-                color_to_adjust = "background"
-            elif is_text_method and not is_bg_method:
+            elif is_text_random and not is_bg_random and not is_bg_method:
                 color_to_adjust = "text"
-            # If neither is a function or random, randomly choose one
-            elif not is_bg_method and not is_text_method and not is_bg_random and not is_text_random:
-                color_to_adjust = random.choice(["text", "background"])
-
             original_color = text_color if color_to_adjust == "text" else background_color
 
             while contrast < minimum_contrast and iteration_count < max_iterations:
