@@ -5,7 +5,7 @@ name: Generate Metrix Header
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight UTC
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
   workflow_dispatch: # Allows manual triggering
 
 jobs:
@@ -19,31 +19,35 @@ jobs:
       - name: Generate Metrix GIF
         uses: joanroig/metrix@main
         with:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }} # DO NOT MODIFY: Retrieves the GitHub token for authentication. Uses PAT if available, falls back to GITHUB_TOKEN for public data.
-          GITHUB_USERNAME: "${{ github.actor }}" # GitHub username for displaying data. Replace with any username if needed.
-          FONT_SIZE: "36"
-          TEXT: "Metrix"
-          ACTIVITY: "False"
-          WIDTH: "272"
-          HEIGHT: "58"
-          GLITCHES: "false"
-          OUTPUT_FILE_PATH: "metrix-header.gif"
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: '${{ github.actor }}'
+          FONT_SIZE: '36'
+          TEXT: 'Metrix'
+          ACTIVITY: 'False'
+          FPS: '30'
+          LOOP: 'true'
+          WIDTH: '272'
+          HEIGHT: '58'
+          GLITCHES: 'false'
+          OUTPUT_FILE_PATH: 'metrix-header.gif'
 
       - name: Commit and Push GIF to separate branch
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Check if branch exists or create it
-          if git ls-remote --heads origin metrix-header-only | grep -q metrix-header-only; then
-            git fetch origin metrix-header-only
-            git checkout metrix-header-only
-          else
-            git checkout --orphan metrix-header-only
-            git rm -rf --cached .
-          fi
-
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+          # Move GIF to temp location
+          mv metrix-header.gif /tmp/
+      
+          # Checkout or create branch
+          git fetch origin metrix-header-only || true
+          git switch metrix-header-only || git switch --orphan metrix-header-only
+      
+          # Move GIF back
+          mv /tmp/metrix-header.gif .
+      
           git add metrix-header.gif
-          git commit -m "Update Metrix GIF" || echo "No changes to commit"
+          git commit -m 'Update Metrix GIF' || echo 'No changes to commit'
           git push origin metrix-header-only
         shell: bash
+
