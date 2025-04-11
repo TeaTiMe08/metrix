@@ -1,4 +1,7 @@
-# GitHub Action that generates a custom Metrix GIF and pushes it to a separate branch
+# GitHub Action that generates a custom Metrix GIF and pushes it to a separate branch to not pollute the git history. 
+# The resulting GIF is used as the header of the README.md, and it gets updated every day: https://github.com/joanroig/metrix/blob/main/README.md
+# Resulting gif: https://github.com/joanroig/metrix/blob/metrix-header-only/metrix-header.gif
+#
 # Source, documentation and examples: https://github.com/joanroig/metrix
 
 name: Generate Metrix Header
