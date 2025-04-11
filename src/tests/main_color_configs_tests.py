@@ -34,6 +34,8 @@ class ColorConfigTester:
             "complementary",
             "contrasting",
             "shade",
+            "shade-light",
+            "shade-dark",
             "red",  # Example of a named color
             "blue"  # Example of another named color
         ]

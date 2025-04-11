@@ -41,11 +41,11 @@ inputs:
     default: "assets/MxPlus_IBM_BIOS.ttf"
   # Colors
   BACKGROUND_COLOR:
-    description: "Color of the background (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade')"
+    description: "Color of the background (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade', 'shade-light', 'shade-dark')"
     required: false
     default: "random"
   TEXT_COLOR:
-    description: "Color of the text (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade')"
+    description: "Color of the text (CSS color names, hex codes, 'random', 'random-light', 'random-dark', 'complementary', 'contrasting', 'shade', 'shade-light', 'shade-dark')"
     required: false
     default: "random"
   MINIMUM_CONTRAST:

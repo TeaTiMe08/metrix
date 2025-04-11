@@ -9,7 +9,7 @@ from log_config import logger
 class ColorUtils:
     NAMED_COLORS = list(mcolors.CSS4_COLORS)
     COLOR_MAP = mcolors.CSS4_COLORS
-    VALID_METHODS = ["complementary", "contrasting", "shade"]
+    VALID_METHODS = ["complementary", "contrasting", "shade", "shade-light", "shade-dark"]
 
     @staticmethod
     def log_color_selection(text_color, background_color, text_method="", bg_method="", text_brightness=None, bg_brightness=None):
@@ -151,6 +151,10 @@ class ColorUtils:
             return ColorUtils.get_contrasting_color(base_color)
         elif method == "shade":
             return ColorUtils.get_random_shade_of_color(base_color)
+        elif method == "shade-light":
+            return ColorUtils.get_light_shade_of_color(base_color)
+        elif method == "shade-dark":
+            return ColorUtils.get_dark_shade_of_color(base_color)
         return base_color  # Default fallback
 
     @staticmethod
@@ -346,6 +350,15 @@ class ColorUtils:
     @staticmethod
     def get_random_shade_of_color(base_color):
         """Generates a random shade of the given color name (lighter or darker)."""
+        # Randomly choose between light and dark shade
+        if random.choice([True, False]):
+            return ColorUtils.get_light_shade_of_color(base_color)
+        else:
+            return ColorUtils.get_dark_shade_of_color(base_color)
+
+    @staticmethod
+    def get_light_shade_of_color(base_color):
+        """Generates a light shade of the given color."""
         try:
             # Convert named color to RGB
             r, g, b = mcolors.to_rgb(mcolors.CSS4_COLORS[base_color])
@@ -353,50 +366,64 @@ class ColorUtils:
             # If the color is invalid, default to white
             return "white"
 
-        # Calculate the lightness of the color
-        lightness = (r + g + b) / 3
+        # Convert to HSL for better control over lightness
+        h, l, s = colorsys.rgb_to_hls(r, g, b)
 
-        # Check if the color is too close to white or black
-        if lightness > 0.9:
-            # If the color is too close to white or black, randomize it
-            r = random.uniform(0, 1)
-            g = random.uniform(0, 1)
-            b = random.uniform(0, 1)
-            darken_factor = random.uniform(0.1, 0.5)
-            r = max(0, r - darken_factor)
-            g = max(0, g - darken_factor)
-            b = max(0, b - darken_factor)
-        elif lightness < 0.1:
-            # If the color is too close to white or black, randomize it
-            r = random.uniform(0, 1)
-            g = random.uniform(0, 1)
-            b = random.uniform(0, 1)
-            lighten_factor = random.uniform(0.1, 0.5)
-            r = min(1, r + lighten_factor)
-            g = min(1, g + lighten_factor)
-            b = min(1, b + lighten_factor)
-        elif ColorUtils.is_gray(r, g, b):
-            # If gray, generate a random color far from gray
-            if random.choice([True, False]):
-                return ColorUtils.generate_random_light_color()
-            else:
-                return ColorUtils.generate_random_dark_color()
+        # Calculate how much we need to lighten
+        # Use wider ranges to ensure more variation between generated colors
+        if l < 0.6:
+            # For darker colors, add more lightness variance
+            new_l = min(0.95, l + random.uniform(0.25, 0.45))
         else:
-            # Randomly decide whether to darken or lighten the color
-            darken_factor = random.uniform(0.2, 0.5)
-            lighten_factor = random.uniform(0.6, 1)
+            # Already light, just adjust slightly with some variation
+            new_l = min(0.95, l + random.uniform(0.05, 0.2))
 
-            # Randomly choose whether to darken or lighten the color
-            if random.choice([True, False]):
-                # Darken the color by reducing RGB values
-                r = max(0, r - darken_factor)
-                g = max(0, g - darken_factor)
-                b = max(0, b - darken_factor)
-            else:
-                # Lighten the color by increasing RGB values
-                r = min(1, r + lighten_factor)
-                g = min(1, g + lighten_factor)
-                b = min(1, b + lighten_factor)
+        # Vary saturation for more diverse results
+        saturation_modifier = random.uniform(0.7, 1.1)
+        new_s = max(0.05, min(1.0, s * saturation_modifier))
 
-        # Return the modified color as the closest color name
-        return ColorUtils.closest_color_name(r, g, b)
+        # Add slight hue variation to create more distinct shades
+        hue_shift = random.uniform(-0.05, 0.05)
+        new_h = (h + hue_shift) % 1.0
+
+        # Convert back to RGB
+        r2, g2, b2 = colorsys.hls_to_rgb(new_h, new_l, new_s)
+
+        # Return the closest named color
+        return ColorUtils.closest_color_name(r2, g2, b2)
+
+    @staticmethod
+    def get_dark_shade_of_color(base_color):
+        """Generates a dark shade of the given color."""
+        try:
+            # Convert named color to RGB
+            r, g, b = mcolors.to_rgb(mcolors.CSS4_COLORS[base_color])
+        except KeyError:
+            # If the color is invalid, default to black
+            return "black"
+
+        # Convert to HSL for better control over lightness
+        h, l, s = colorsys.rgb_to_hls(r, g, b)
+
+        # Calculate how much we need to darken with more variation
+        if l > 0.4:
+            # For lighter colors, darken more significantly with variety
+            new_l = max(0.05, l - random.uniform(0.25, 0.5))
+        else:
+            # Already dark, make smaller adjustments with variation
+            new_l = max(0.05, l - random.uniform(0.05, 0.15))
+
+        # Vary saturation to create more diverse dark shades
+        # Sometimes increase saturation for rich dark colors, sometimes reduce it
+        saturation_modifier = random.uniform(0.9, 1.3)
+        new_s = min(1.0, s * saturation_modifier)
+
+        # Add slight hue variation to create more distinct shades
+        hue_shift = random.uniform(-0.05, 0.05)
+        new_h = (h + hue_shift) % 1.0
+
+        # Convert back to RGB
+        r2, g2, b2 = colorsys.hls_to_rgb(new_h, new_l, new_s)
+
+        # Return the closest named color
+        return ColorUtils.closest_color_name(r2, g2, b2)
