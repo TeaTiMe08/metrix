@@ -25,6 +25,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: '${{ github.actor }}'
           FONT_SIZE: '36'
+          BACKGROUND_COLOR: 'random-dark'
+          TEXT_COLOR: 'shade-light'
           TEXT: 'Metrix'
           ACTIVITY: 'False'
           FPS: '30'
