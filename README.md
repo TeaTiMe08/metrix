@@ -10,7 +10,7 @@
 <table align="center">
   <tr>
     <td align="center">
-      <a href="#default"><img src="img/metrix-default.gif" width="240px" /></a>
+      <a href="#classic"><img src="img/metrix-classic.gif" width="240px" /></a>
     </td>
     <td align="center">
       <a href="#red"><img src="img/metrix-red.gif" width="240px" /></a>
@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <td align="center">
-      <a href="#default"><b>Default</b></a>
+      <a href="#classic"><b>classic</b></a>
     </td>
     <td align="center">
       <a href="#red"><b>Red</b></a>
@@ -150,15 +150,17 @@ Some examples are provided below, with the corresponding configuration for each:
 
 ---
 
-### <a id="default"></a> Default
+### <a id="classic"></a> Classic
 
 > Notice that looping is deactivated by default!
 
-![default](img/metrix-default.gif)
+![classic](img/metrix-classic.gif)
 
 ```
 with:
   GITHUB_USERNAME: 'joanroig'
+  BACKGROUND_COLOR: 'black'
+  TEXT_COLOR: 'limegreen'
 ```
 
 ---
@@ -170,6 +172,7 @@ with:
 ```
 with:
   GITHUB_USERNAME: 'joanroig'
+  BACKGROUND_COLOR: 'black'
   TEXT_COLOR: 'red'
   LOOP: 'true'
 ```
@@ -190,13 +193,14 @@ with:
 
 ---
 
-### <a id="yellow-noglitch"></a> Yellow with disabled glitches
+### <a id="yellow-noglitch"></a> Yellow over a shaded dark color with disabled glitches
 
 ![yellow noglitch](img/metrix-yellow-noglitch.gif)
 
 ```
 with:
   GITHUB_USERNAME: 'joanroig'
+  BACKGROUND_COLOR: 'shade-dark'
   TEXT_COLOR: 'yellow'
   GLITCHES: 'false'
   LOOP: 'true'
@@ -215,12 +219,12 @@ with:
   TEXT_COLOR: 'gold'
   ACTIVITY_TEXT: 'I worked a lot lately...'
   TEXT: |
-  {username} is booting up......
-  -----------------------
+  {username} is booting up.......
+  -----------------------------
 
-  Joined GitHub {created_at}
-  Followed by {followers} Users
-  Owner of {total_repos} Repos
+  Joined GitHub: {created_at}
+  Followed by: {followers} Users
+  Owner of: {total_repos} Repos
 
   Total Commits: {total_commits}
   Total Stars: {total_stars}
@@ -233,7 +237,7 @@ with:
 
 ### <a id="purple-torvalds"></a> Yellow over purple, with data from another user, reduced activity days, and custom activity text
 
-![default](img/metrix-purple-torvalds.gif)
+![purple-torvalds](img/metrix-purple-torvalds.gif)
 
 ```
 with:
@@ -287,11 +291,11 @@ Metrix is highly customizable through GitHub Action arguments. A complete exampl
 | TYPING_CHARACTER   | Character used for the typing effect.                                                                                                                                           | `'█'`                                                                                     |
 | ACTIVITY           | Enable or disable the activity section.                                                                                                                                         | `'true'` or `'false'`                                                                     |
 | ACTIVITY_TEXT      | Text to display for the activity section.                                                                                                                                       | `'Last month commit activity:'`                                                           |
-| ACTIVITY_DAYS      | Number of days for the activity chart.                                                                                                                                          | `'30'`                                                                                    |
+| ACTIVITY_DAYS      | Number of days for the activity chart.                                                                                                                                          | `'29'`                                                                                    |
 | FPS                | Frames per second for the GIF.                                                                                                                                                  | `'50'`                                                                                    |
 | LOOP               | Enable or disable infinite looping of the GIF.                                                                                                                                  | `'true'` or `'false'`                                                                     |
-| WIDTH              | Width of the generated GIF.                                                                                                                                                     | `'622'`                                                                                   |
-| HEIGHT             | Height of the generated GIF.                                                                                                                                                    | `'356'`                                                                                   |
+| WIDTH              | Width of the generated GIF.                                                                                                                                                     | `'608'`                                                                                   |
+| HEIGHT             | Height of the generated GIF.                                                                                                                                                    | `'342'`                                                                                   |
 | GLITCHES           | Enable or disable glitches in the GIF.                                                                                                                                          | `'true'` or `'false'`                                                                     |
 | MAX_GLITCHES       | Maximum number of glitches that can occur simultaneously.                                                                                                                       | `'4'`                                                                                     |
 | GLITCH_PROBABILITY | Probability of a glitch occurring in a frame (0 to 100).                                                                                                                        | `'3'`                                                                                     |

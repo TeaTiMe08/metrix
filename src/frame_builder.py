@@ -33,32 +33,54 @@ class FrameBuilder:
 
     @staticmethod
     def create_frames(count, text, activity_graphic, text_color, background_color, text_font, symbol_font, frame_count, frames_dir):
-        # Generate the frame
-        img = Image.new("RGB", (Config.WIDTH, Config.HEIGHT), background_color)
+        width, height = Config.WIDTH, Config.HEIGHT
+        left_margin = 10
+
+        # Create base image and draw context
+        img = Image.new("RGB", (width, height), background_color)
         draw = ImageDraw.Draw(img)
 
-        # Draw text
-        draw.text((10, 10), text, font=text_font, fill=text_color)
+        # Draw main text
+        draw.text((left_margin, 10), text, font=text_font, fill=text_color)
 
         if Config.ACTIVITY:
-            draw.text((10, Config.HEIGHT - 60), Config.ACTIVITY_TEXT, font=symbol_font, fill=text_color)
-            draw.text((10, Config.HEIGHT - 32), activity_graphic, font=symbol_font, fill=text_color)
-            # Draw frame box around activity graphic
-            activity_length = len(activity_graphic)
-            draw.text((10, Config.HEIGHT - 32), "‾" * activity_length, font=symbol_font, fill=text_color)
-            draw.text((2, Config.HEIGHT - 33), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
-            draw.text((2, Config.HEIGHT - 30), "│" + " " * (activity_length - 1) + "│", font=symbol_font, fill=text_color)
-            draw.text((10, Config.HEIGHT - 11), "‾" * activity_length, font=symbol_font, fill=text_color)
+            symbol_font_size = symbol_font.size
+            padding = max(3, int(symbol_font_size * 0.25))
+            box_border_width = max(1, int(symbol_font_size * 0.2))
 
-        # Save the first frame
+            # Calculate positions
+            activity_x = left_margin - 1 + padding
+            activity_y = height - int(symbol_font_size * 1.7)
+            activity_text_y = height - int(symbol_font_size * 3.2)
+
+            # Get text dimensions for the activity graphic
+            bbox = symbol_font.getbbox(activity_graphic)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+            text_y_offset = bbox[1]
+
+            # Calculate box properties
+            box_top = activity_y - padding
+            box_width = text_width + (padding * 2)
+            box_height = text_height + (padding * 2)
+
+            # Draw activity elements
+            draw.text((left_margin, activity_text_y), Config.ACTIVITY_TEXT, font=symbol_font, fill=text_color)
+            draw.rectangle([
+                (activity_x - padding - 1, box_top - 1),
+                (activity_x - padding + box_width, box_top + box_height)
+            ], outline=text_color, width=box_border_width)
+            draw.text((activity_x, box_top + padding - text_y_offset), activity_graphic, font=symbol_font, fill=text_color)
+
+        # Save first frame
         frame_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
         img.save(frame_path)
         frame_count += 1
 
-        # Copy the same frame for the remaining count-1 times
+        # Duplicate for remaining frames
         for _ in range(count - 1):
-            new_frame_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
-            shutil.copy(frame_path, new_frame_path)
+            new_path = os.path.join(frames_dir, f"frame_{frame_count:04d}.png")
+            shutil.copy(frame_path, new_path)
             frame_count += 1
 
         return frame_count
@@ -66,7 +88,7 @@ class FrameBuilder:
     @staticmethod
     def create_typing_frames(text_lines, activity_graphic, text_color, background_color, frames_dir):
         font = ImageFont.truetype(FileUtils.resolve_font_path(Config.FONT_PATH), Config.FONT_SIZE)
-        symbol_font = ImageFont.truetype(FileUtils.resolve_font_path(Config.SYMBOL_FONT_PATH), Config.FONT_SIZE)
+        symbol_font = ImageFont.truetype(FileUtils.resolve_font_path(Config.SYMBOL_FONT_PATH), Config.SYMBOL_FONT_SIZE)
 
         typed_text = ""
         frame_count = 0

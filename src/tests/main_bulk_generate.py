@@ -55,7 +55,7 @@ def process_combination(queue, thread_id):
             # Generate text and build frames
             text_lines = TextBuilder.generate_text()
             frame_rate = Config.FPS  # Maximum rate is 50 FPS, higher values make it slower
-            activity_graphic = "         ▁ ▁▁ ▁▄▁__▁   _▄█▄_▄◘"
+            activity_graphic = "_▁▁▄▁▁ ▄▄▁__▁▁ _ ▄█▄▁▄◘▄▄█▄█▄"
             logger.info(f"----------------------------------------------------")
             logger.info(f"[THREAD-{thread_id}][BUILD] - Building GIF")
 

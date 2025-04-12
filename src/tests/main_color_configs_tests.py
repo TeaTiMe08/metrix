@@ -143,7 +143,7 @@ class ColorConfigTester:
                 f"Result BG: {result_bg}\n"
                 f"Result Text: {result_text}\n"
                 f"Contrast: {contrast}"
-                f"Modulation: {modulation}\n\n"
+                f"Modulation: {modulation}"
             )
 
             # Split into lines
