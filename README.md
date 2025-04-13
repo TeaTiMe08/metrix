@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Metrix generates customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile.</strong><br/>
+  <strong>Metrix generates customizable retro-style GIFs showcasing GitHub metrics for your GitHub README profile.</strong><br/>
   Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>
 </p>
 
