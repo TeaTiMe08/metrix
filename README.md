@@ -4,7 +4,14 @@
   </a>
 </p>
 
-<p align="center">Metrix generates customizable retro-style GIF infographics showcasing GitHub metrics for your GitHub README profile. Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
+<p align="center">
+  <strong>Metrix generates customizable retro-style GIF showcasing GitHub metrics for your GitHub README profile.</strong><br/>
+  Choose your color combination with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/joanroig/metrix/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/joanroig/metrix?color=blue"></a>
+  <a href="https://github.com/joanroig/metrix/actions"><img alt="GitHub Actions Status" src="https://img.shields.io/github/actions/workflow/status/joanroig/metrix/metrix-header.yml?branch=main"></a>
 </p>
 
 <table align="center">
@@ -21,7 +28,7 @@
   </tr>
   <tr>
     <td align="center">
-      <a href="#classic"><b>classic</b></a>
+      <a href="#classic"><b>Classic</b></a>
     </td>
     <td align="center">
       <a href="#red"><b>Red</b></a>
@@ -60,12 +67,12 @@
   </tr>
 </table>
 
-## Usage Guide
+## 📋 Usage Guide
 
 Follow these steps to integrate Metrix into your GitHub profile:
 
 1.  **Create a New Repository**  
-    Create a new repository to host your profile README. For guidance, refer to GitHub’s documentation on [setting up and managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
+    Create a new repository to host your profile README. For guidance, refer to GitHub's documentation on [setting up and managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
 
 2.  **(Optional) Generate and Add a Personal Access Token (PAT)**  
     By default, the action will only display public data. To also include private repository data, follow these steps:
@@ -85,7 +92,7 @@ Follow these steps to integrate Metrix into your GitHub profile:
     In your repository settings, go to **Settings > Actions > General** and enable **"Read repository contents and packages permissions"** at the bottom of the page.
 
 4.  **Add the Metrix GIF to Your README**  
-     Create a new `README.md` like this:
+     Create a new `README.md` with this content:
 
     ```markdown
     <p align="center">
@@ -122,12 +129,24 @@ Follow these steps to integrate Metrix into your GitHub profile:
       generate:
         runs-on: ubuntu-latest
         steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v4
+
           - name: Generate Metrix
             uses: joanroig/metrix@main
             with:
               GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
               GITHUB_USERNAME: ${{ github.actor }}
               # You can add more customization parameters here
+
+          - name: Commit and Push Metrix GIF
+            run: |
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              git add metrix.gif
+              git commit -m "Update GitHub Metrix GIF" || echo "No changes to commit"
+              git push
+            shell: bash
     ```
 
     You can find an example with all the default configuration in the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file.
@@ -135,10 +154,10 @@ Follow these steps to integrate Metrix into your GitHub profile:
 6.  **Run the Action**  
     Your action is now set up! Commit the changes and manually trigger the action to generate the metrics GIF.
 
-7.  **(Optional) Customize your Metrix**  
+7.  **Customize Your Metrix**  
     Customize your Metrix by adding parameters to your action from the [parameters](#parameters) section below. You can also use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) as a baseline for your configuration.
 
-## Showcase
+## 🖼️ Showcase
 
 <p align="center">
   <a href="https://joanroig.github.io/metrix-gallery">
@@ -158,11 +177,11 @@ Below are example themes with their corresponding configurations. To use any of 
 
 ![classic](img/metrix-classic.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'joanroig'
-  BACKGROUND_COLOR: 'black'
-  TEXT_COLOR: 'limegreen'
+  GITHUB_USERNAME: "joanroig"
+  BACKGROUND_COLOR: "black"
+  TEXT_COLOR: "limegreen"
 ```
 
 ---
@@ -171,12 +190,12 @@ with:
 
 ![red](img/metrix-red.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'joanroig'
-  BACKGROUND_COLOR: 'black'
-  TEXT_COLOR: 'red'
-  LOOP: 'true'
+  GITHUB_USERNAME: "joanroig"
+  BACKGROUND_COLOR: "black"
+  TEXT_COLOR: "red"
+  LOOP: "true"
 ```
 
 ---
@@ -185,12 +204,12 @@ with:
 
 ![blue](img/metrix-blue.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'joanroig'
-  BACKGROUND_COLOR: 'blue'
-  TEXT_COLOR: 'white'
-  LOOP: 'true'
+  GITHUB_USERNAME: "joanroig"
+  BACKGROUND_COLOR: "blue"
+  TEXT_COLOR: "white"
+  LOOP: "true"
 ```
 
 ---
@@ -199,13 +218,13 @@ with:
 
 ![yellow noglitch](img/metrix-yellow-noglitch.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'joanroig'
-  BACKGROUND_COLOR: 'shade-dark'
-  TEXT_COLOR: 'yellow'
-  GLITCHES: 'false'
-  LOOP: 'true'
+  GITHUB_USERNAME: "joanroig"
+  BACKGROUND_COLOR: "shade-dark"
+  TEXT_COLOR: "yellow"
+  GLITCHES: "false"
+  LOOP: "true"
 ```
 
 ---
@@ -214,12 +233,12 @@ with:
 
 ![gold customtext](img/metrix-gold-customtext.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'joanroig'
-  BACKGROUND_COLOR: 'darkgoldenrod'
-  TEXT_COLOR: 'gold'
-  ACTIVITY_TEXT: 'I worked a lot lately...'
+  GITHUB_USERNAME: "joanroig"
+  BACKGROUND_COLOR: "darkgoldenrod"
+  TEXT_COLOR: "gold"
+  ACTIVITY_TEXT: "I worked a lot lately..."
   TEXT: |
   {username} is booting up.......
   -----------------------------
@@ -232,7 +251,7 @@ with:
   Total Stars: {total_stars}
 
   Data updated: {updated_date}
-  LOOP: 'true'
+  LOOP: "true"
 ```
 
 ---
@@ -241,14 +260,14 @@ with:
 
 ![purple-torvalds](img/metrix-purple-torvalds.gif)
 
-```
+```yaml
 with:
-  GITHUB_USERNAME: 'torvalds'
-  TEXT_COLOR: 'yellow'
-  BACKGROUND_COLOR: 'purple'
-  ACTIVITY_TEXT: 'Last two weeks were intense:'
-  ACTIVITY_DAYS: '14'
-  LOOP: 'true'
+  GITHUB_USERNAME: "torvalds"
+  TEXT_COLOR: "yellow"
+  BACKGROUND_COLOR: "purple"
+  ACTIVITY_TEXT: "Last two weeks were intense:"
+  ACTIVITY_DAYS: "14"
+  LOOP: "true"
 ```
 
 ---
@@ -257,17 +276,17 @@ with:
 
 ![customsize](img/metrix-customsize.gif)
 
-```
+```yaml
 with:
-  FONT_SIZE: '29',
-  BACKGROUND_COLOR: 'random-light',
-  TEXT_COLOR: 'shade',
-  TEXT: 'The size of the gif\ncan be customized!',
-  TYPING_CHARACTER: '|',
-  ACTIVITY: 'false',
-  LOOP: 'true'
-  WIDTH: '580'
-  HEIGHT: '80'
+  FONT_SIZE: "29"
+  BACKGROUND_COLOR: "random-light"
+  TEXT_COLOR: "shade"
+  TEXT: "The size of the gif\ncan be customized!"
+  TYPING_CHARACTER: "|"
+  ACTIVITY: "false"
+  LOOP: "true"
+  WIDTH: "580"
+  HEIGHT: "80"
 ```
 
 ---
@@ -276,23 +295,23 @@ with:
 
 ![header](https://raw.githubusercontent.com/joanroig/metrix/metrix-header-only/metrix-header.gif)
 
-```
+```yaml
 with:
-  FONT_SIZE: '36'
-  BACKGROUND_COLOR: 'random-dark'
-  TEXT_COLOR: 'shade-light'
-  TEXT: 'Metrix'
-  ACTIVITY: 'False'
-  FPS: '30'
-  LOOP: 'true'
-  WIDTH: '272'
-  HEIGHT: '58'
-  GLITCHES: 'false'
+  FONT_SIZE: "36"
+  BACKGROUND_COLOR: "random-dark"
+  TEXT_COLOR: "shade-light"
+  TEXT: "Metrix"
+  ACTIVITY: "False"
+  FPS: "30"
+  LOOP: "true"
+  WIDTH: "272"
+  HEIGHT: "58"
+  GLITCHES: "false"
 ```
 
 ---
 
-## <a id="parameters"></a>Available Parameters and Options
+## ⚙️ Configuration Parameters
 
 Metrix is highly customizable through GitHub Action arguments. A complete example, including the default parameters, is provided: [metrix-complete.yml](.github/workflows/metrix-complete.yml). Below is the full list of available parameters:
 
@@ -323,7 +342,7 @@ Metrix is highly customizable through GitHub Action arguments. A complete exampl
 | GLITCH_PROBABILITY | Probability of a glitch occurring in a frame (0 to 100).                                                                                                                        | `'3'`                                                                                     |
 | OUTPUT_FILE_PATH   | Path for the generated GIF.                                                                                                                                                     | `'metrix.gif'`                                                                            |
 
-### <a id="variables"></a>Text Variables (Curated GitHub API Data)
+### <a id="variables"></a>📝 Text Variables (Curated GitHub API Data)
 
 | **Variable**                                          | **Description**                                                                      | **Example Replacement**            |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
@@ -373,7 +392,7 @@ These variables are sourced directly from the GitHub User API data without any t
 | `{collaborators}`             | Number of collaborators                    | `'10'`                              |
 | `{two_factor_authentication}` | Two-factor authentication status (Boolean) | `'true'`                            |
 
-## Development Setup
+## 🛠️ Development Setup
 
 ### Requirements
 
@@ -403,10 +422,10 @@ To run the application:
 
 For running test scripts and bulk generation tools, see the [tests documentation](src/tests/README.md).
 
-## Credits
+## 🙏 Credits
 
 Fonts by **VileR**: [Oldschool PC Fonts](https://int10h.org/oldschool-pc-fonts/fontlist/)
 
-## License
+## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
