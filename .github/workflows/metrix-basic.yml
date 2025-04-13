@@ -5,7 +5,7 @@ name: Generate Metrix (minimum setup)
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight UTC
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
   workflow_dispatch: # Allows manual triggering
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
         uses: joanroig/metrix@main
         with:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}  # DO NOT MODIFY: Retrieves the GitHub token for authentication. Uses PAT if available, falls back to GITHUB_TOKEN for public data.
-          GITHUB_USERNAME: '${{ github.actor }}'                          # GitHub username for displaying data. Replace with any username if needed.
+          GITHUB_USERNAME: "${{ github.actor }}"                          # GitHub username for displaying data. Replace with any username if needed.
 
       - name: Commit and Push Metrix GIF
         run: |
