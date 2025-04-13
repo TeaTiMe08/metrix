@@ -23,6 +23,8 @@ def load_color_combinations(file_path):
 
 
 def process_combination(queue, thread_id):
+    # Initialize frames_dir at the beginning to avoid UnboundLocalError in finally block
+    frames_dir = f"frames_{thread_id}"
     try:
         while True:
             combination = queue.get()  # Blocks until an item is available
@@ -43,7 +45,6 @@ def process_combination(queue, thread_id):
                 continue
 
             # Create a unique folder for each thread
-            frames_dir = f"frames_{thread_id}"
             os.makedirs(frames_dir, exist_ok=True)
 
             logger.info(f"----------------------------------------------------")
