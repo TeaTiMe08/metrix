@@ -136,17 +136,19 @@ Follow these steps to integrate Metrix into your GitHub profile:
     Your action is now set up! Commit the changes and manually trigger the action to generate the metrics GIF.
 
 7.  **(Optional) Customize your Metrix**  
-    You can use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) file or read the [parameters](#parameters) section to find some parameters to add and customize in your action. Lots of interesting color combinations can be found using the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a>.
+    Customize your Metrix by adding parameters to your action from the [parameters](#parameters) section below. You can also use the [metrix-complete.yml](.github/workflows/metrix-complete.yml) as a baseline for your configuration.
 
 ## Showcase
 
 <p align="center">
-<a href="https://joanroig.github.io/metrix-gallery">
-  <img alt="Showcase" src="showcase.gif">
+  <a href="https://joanroig.github.io/metrix-gallery">
+    <img alt="Showcase" src="https://raw.githubusercontent.com/joanroig/metrix-gallery/main/showcase.gif">
   </a>
+  <br/>
+  <sub>Choose your theme with the <a href="https://joanroig.github.io/metrix-gallery">Metrix Gallery</a></sub>
 </p>
 
-Some examples are provided below, with the corresponding configuration for each:
+Below are example themes with their corresponding configurations. To use any of these examples, copy the configuration snippet and add it to your GitHub action file:
 
 ---
 
@@ -266,6 +268,26 @@ with:
   LOOP: 'true'
   WIDTH: '580'
   HEIGHT: '80'
+```
+
+---
+
+### <a id="header"></a> Header (as seen at the top of this README)
+
+![header](https://raw.githubusercontent.com/joanroig/metrix/metrix-header-only/metrix-header.gif)
+
+```
+with:
+  FONT_SIZE: '36'
+  BACKGROUND_COLOR: 'random-dark'
+  TEXT_COLOR: 'shade-light'
+  TEXT: 'Metrix'
+  ACTIVITY: 'False'
+  FPS: '30'
+  LOOP: 'true'
+  WIDTH: '272'
+  HEIGHT: '58'
+  GLITCHES: 'false'
 ```
 
 ---
