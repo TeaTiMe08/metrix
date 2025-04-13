@@ -10,8 +10,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/joanroig/metrix/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/joanroig/metrix?color=blue"></a>
+  <a href="https://github.com/joanroig/metrix/releases"><img src="https://img.shields.io/github/v/release/joanroig/metrix?&include_prereleases&label=version" /></a>
   <a href="https://github.com/joanroig/metrix/actions"><img alt="GitHub Actions Status" src="https://img.shields.io/github/actions/workflow/status/joanroig/metrix/metrix-header.yml?branch=main"></a>
+  <a href="https://github.com/joanroig/metrix/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/joanroig/metrix?color=blue"></a>
+  <a href="https://github.com/joanroig/metrix/issues"><img src="https://img.shields.io/github/issues/joanroig/metrix"></a>
+  <a href="https://github.com/joanroig/metrix/stargazers"><img src="https://img.shields.io/github/stars/joanroig/metrix"></a>
 </p>
 
 <table align="center">
