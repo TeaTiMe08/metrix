@@ -94,6 +94,16 @@ Follow these steps to integrate Metrix into your GitHub profile:
 3.  **Enable Workflow Permissions**  
     In your repository settings, go to **Settings > Actions > General** and enable **"Read repository contents and packages permissions"** at the bottom of the page.
 
+    > **_NOTE:_** If you do not enable this permission, you must add the following permissions block to your workflow YAML under the jobs section:
+
+    ```yaml
+    jobs:
+      generate:
+        runs-on: ubuntu-latest
+        permissions:
+          contents: write
+    ```
+
 4.  **Add the Metrix GIF to Your README**  
      Create a new `README.md` with this content:
 
@@ -131,8 +141,6 @@ Follow these steps to integrate Metrix into your GitHub profile:
     jobs:
       generate:
         runs-on: ubuntu-latest
-        permissions:
-          contents: write
         steps:
           - name: Checkout Repository
             uses: actions/checkout@v4
